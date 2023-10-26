@@ -20,7 +20,9 @@ struct user{
 };
 
 
-
+int main(){
+    cout << "halo";
+}
 
 // struct barang
 // {
