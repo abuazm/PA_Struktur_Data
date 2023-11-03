@@ -1,126 +1,3 @@
-// #include <iostream>
-// #include <fstream>
-// #include <sstream>
-// #include <bits/stdc++.h>
-// using namespace std;
-
-
-// struct lapangan{
-//     string id_lapangan;
-//     string fasilitas;
-//     string jenis_lapangan;
-//     int harga;
-//     //bisa di tambah array jadwal sewa
-//     lapangan *next;
-//     lapangan *prev;
-// };
-// struct user{
-//     string username;
-//     string password;
-//     string nomor_hp;
-//     user *next;
-//     user *prev;
-// };
-// struct penyewaan{
-//     //nanti aja
-// };
-
-// // #operation
-// // ->check linked list
-// template <typename P>
-// bool isempty(P *head, P *tail){
-//     if(head == nullptr && tail == nullptr){
-//         return true;
-//     }
-//     return false;
-// }
-// // ->check username is used
-// bool finduser(string username, user *head_user){
-//     user* current = head_user;
-//     while (current != nullptr) {
-//         if (current->username == username) {
-//             return true;
-//         }
-//         current = current->next;
-//     }
-//     return false;
-// }
-
-
-// // #add
-// user *Newuser(user head_user){
-//     user *newuser = new user;
-//     string username;
-//     cout << "Masukkan username: "; getline(cin,username);
-//     if (finduser(username,head_user) == true)
-//     {
-//         /* code */
-//         newuser->username;
-//         cout << "Masukkan pass: "; getline(cin,newuser->password);
-//         cout << "Masukkan no hp: "; getline(cin,newuser->nomor_hp);
-//         newuser->next = nullptr;
-//         newuser->prev = nullptr;
-//         return newuser;
-//     } else
-//     {
-//         /* code */
-//         cout << "username sudah di pakai" << endl;
-//     }
-// }
-
-// void adduser(user *head_user, user *tail_user){
-//     user *newuser = Newuser(head_user);
-//     if(isempty(head_user,tail_user)){
-//         head_user = newuser;
-//         tail_user = newuser;
-//     }else{
-//         tail_user->next = newuser;
-//         newuser->prev = tail_user;
-//         tail_user = newuser;
-//     }
-// }
-
-
-// // #view
-// void view_alluser(user *head_user){
-//     user *temp = head_user;
-//     while(temp!= nullptr){
-//         cout << temp->username << endl;
-//         cout << temp->password << endl;
-//         cout << temp->nomor_hp << endl;
-//         cout << "================" << endl;
-//         temp = temp->next;
-//     }
-// }
-
-
-// int main(){
-//     // used variabel
-//     user *head_user = nullptr;
-//     user *tail_user = nullptr;
-//     cout << "1. add user" << endl;
-//     cout << "2. view all user" << endl;
-//     cout << "0. exit" << endl;
-//     cout << "Masukkan pilihan: ";
-//     int pilihan;
-//     if (pilihan == 1)
-//     {
-//         /* code */
-//         adduser(head_user,tail_user);
-//     } else if (pilihan == 2)
-//     {
-//         /* code */
-//         view_alluser(head_user);
-//     } else if (pilihan == 0)
-//     {
-//         /* code */
-//         cout << "keluar" << endl;
-//     }
-//     return 0;
-// }
-
-
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -203,6 +80,15 @@ bool ver_space(string str) {
     return true; // Jika semua karakter adalah spasi
 }
 
+bool ver_nospace(string str) {
+    for (char c : str) {
+        if (isspace(c)) {
+            return true; // 
+        }
+    }
+    return false; // 
+}
+
 //eror paksa input harus string dan no kosong
 string str_nokosong(){
     string user_input;
@@ -216,6 +102,21 @@ string str_nokosong(){
             return user_input;
         }
     } while (user_input.empty() || ver_space(user_input));
+}
+
+string str_nospasi(){
+    // masih eror
+    string user_input;
+    do {
+        //cout << "Masukkan input: ";
+        getline(cin, user_input);
+        if (user_input.empty() || ver_nospace(user_input)) {
+            cout << "Input tidak boleh ada spasi. Silakan coba lagi." << endl;
+        }
+        else {
+            return user_input;
+        }
+    } while (user_input.empty() || ver_nospace(user_input));
 }
 
 // Fungsi untuk mencari apakah username sudah digunakan
@@ -245,9 +146,12 @@ user* isUserValid (user *head_user, string username, string password) {
 user* Newuser(user* head_user) {
     user* newuser = new user;
     cout << "Masukkan username: "; cin.ignore(); getline(cin, newuser->username);
+    //newuser->username = str_nospasi();
     if (!finduser(newuser->username, head_user)) {
         cout << "Masukkan password: "; getline(cin, newuser->password);
+        //newuser->password = str_nospasi();
         cout << "Masukkan nomor hp: "; getline(cin, newuser->nomor_hp);
+        //newuser->nomor_hp = str_nospasi();
         newuser->next = nullptr;
         newuser->prev = nullptr;
         return newuser;
@@ -533,6 +437,276 @@ void view_alluser(user* head_user) {
 }
 
 
+// ===============================sorting================================================
+int length(lapangan *head_lapangan)
+{
+    int panjang = 0;
+    lapangan *temp = head_lapangan;
+    while (temp != NULL)
+    {
+        temp = temp->next;
+        panjang++;
+    }
+    return panjang;
+}
+
+void swaplapangans(lapangan **head_lapangan, lapangan *a, lapangan *b)
+{
+    if (a == b)
+        return;
+
+    // Cari lapangan sebelum a dan b
+    lapangan *prevA = NULL, *prevB = NULL, *curr = *head_lapangan;
+    while (curr)
+    {
+        if (curr->next == a)
+            prevA = curr;
+        if (curr->next == b)
+            prevB = curr;
+        curr = curr->next;
+    }
+
+    // Jika a adalah head_lapangan, update head_lapangan
+    if (a == *head_lapangan)
+        *head_lapangan = b;
+    else if (b == *head_lapangan)
+        *head_lapangan = a; // Jika b adalah head_lapangan, update head_lapangan
+
+    // Update next untuk prevA dan prevB
+    if (prevA)
+        prevA->next = b;
+    if (prevB)
+        prevB->next = a;
+
+    // Tukar next untuk a dan b
+    lapangan *temp = a->next;
+    a->next = b->next;
+    b->next = temp;
+}
+
+lapangan *findlapangan(lapangan *head_lapangan, int idx)
+{
+    lapangan *temp = head_lapangan;
+
+    for (int i = 0; i < idx; i++)
+    {
+        temp = temp->next;
+    }
+
+    return temp;
+}
+
+
+
+void shellSort(lapangan **head_lapangan, int n)
+{
+    for (int gap = n / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < n; i++)
+        {
+            lapangan *temp = findlapangan(*head_lapangan, i);
+            int j;
+            for (j = i; j >= gap && findlapangan(*head_lapangan, j - gap)->no_lapangan > temp->no_lapangan; j -= gap)
+            {
+                swaplapangans(head_lapangan, findlapangan(*head_lapangan, j), findlapangan(*head_lapangan, j - gap));
+            }
+        }
+    }
+}
+
+void shellSort2(lapangan **head_lapangan, int n)
+{
+    for (int gap = n / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < n; i++)
+        {
+            lapangan *temp = findlapangan(*head_lapangan, i);
+            int j;
+            for (j = i; j >= gap && findlapangan(*head_lapangan, j - gap)->no_lapangan < temp->no_lapangan; j -= gap)
+            {
+                swaplapangans(head_lapangan, findlapangan(*head_lapangan, j), findlapangan(*head_lapangan, j - gap));
+            }
+        }
+    }
+}
+void shellSort3(lapangan **head_lapangan, int n)
+{
+    for (int gap = n / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < n; i++)
+        {
+            lapangan *temp = findlapangan(*head_lapangan, i);
+            int j;
+            for (j = i; j >= gap && findlapangan(*head_lapangan, j - gap)->harga > temp->harga; j -= gap)
+            {
+                swaplapangans(head_lapangan, findlapangan(*head_lapangan, j), findlapangan(*head_lapangan, j - gap));
+            }
+        }
+    }
+}
+void shellSort4(lapangan **head_lapangan, int n)
+{
+    for (int gap = n / 2; gap > 0; gap /= 2)
+    {
+        for (int i = gap; i < n; i++)
+        {
+            lapangan *temp = findlapangan(*head_lapangan, i);
+            int j;
+            for (j = i; j >= gap && findlapangan(*head_lapangan, j - gap)->harga < temp->harga; j -= gap)
+            {
+                swaplapangans(head_lapangan, findlapangan(*head_lapangan, j), findlapangan(*head_lapangan, j - gap));
+            }
+        }
+    }
+}
+
+
+//============================ seaching boyermore =========================================
+const int NO_OF_CHARS = 256;
+void badCharHeuristic(string str, int size, int badChar[NO_OF_CHARS])
+{
+    // Inisialisasi semua nilai di badChar sebagai -1
+    for (int i = 0; i < NO_OF_CHARS; i++)
+    {
+        badChar[i] = -1;
+    }
+    for (int i = 0; i < size; i++)
+    {
+        badChar[(int)str[i]] = i;
+    }
+}
+
+
+// Booyer Moore Nama
+void search_booyer(lapangan *head, string pat)
+{
+    int m = pat.size();
+    int count;
+    lapangan *temp = head;
+    while (temp != NULL)
+    {
+        int n = temp->jenis_lapangan.size();
+        int badChar[NO_OF_CHARS];
+        badCharHeuristic(pat, m, badChar);
+        int s = 0;
+        while (s <= (n - m))
+        {
+            int j = m - 1;
+            while (j >= 0 && pat[j] == temp->jenis_lapangan[s + j])
+            {
+                j--;
+            }
+            if (j < 0)
+            {
+                cout << "====================================================" << endl;
+                cout << "|| no_lapangan: " << temp->no_lapangan << endl;
+                cout << "|| jenis_lapangan : " << temp->jenis_lapangan << endl;
+                cout << "|| fasilitas_lapangan : " << temp->fasilitas_lapangan << endl;
+                cout << "|| status_lapangan/Berat : " << temp->status_lapangan << endl;
+                cout << "|| Harga : " << temp->harga << endl;
+                cout << "====================================================" << endl;
+                count++;
+                break;
+            }
+            else
+            {
+                s += max(1, j - badChar[temp->jenis_lapangan[s + j]]);
+            }
+        }
+        temp = temp->next;
+    }
+    if (count == 0)
+    {
+        cout << "Data tidak ditemukan" << endl;
+    }
+}
+// searching jenis
+void search_booyer1(lapangan *head, string pat)
+{
+    int m = pat.size();
+    int count;
+    lapangan *temp = head;
+    while (temp != NULL)
+    {
+        int n = temp->status_lapangan.size();
+        int badChar[NO_OF_CHARS];
+        badCharHeuristic(pat, m, badChar);
+        int s = 0;
+        while (s <= (n - m))
+        {
+            int j = m - 1;
+            while (j >= 0 && pat[j] == temp->status_lapangan[s + j])
+            {
+                j--;
+            }
+            if (j < 0)
+            {
+                cout << "====================================================" << endl;
+                cout << "|| no_lapangan: " << temp->no_lapangan << endl;
+                cout << "|| jenis_lapangan : " << temp->jenis_lapangan << endl;
+                cout << "|| fasilitas_lapangan : " << temp->fasilitas_lapangan << endl;
+                cout << "|| status_lapangan/Berat : " << temp->status_lapangan << endl;
+                cout << "|| Harga : " << temp->harga << endl;
+                cout << "====================================================" << endl;
+                count++;
+                break;
+            }
+            else
+            {
+                s += max(1, j - badChar[temp->status_lapangan[s + j]]);
+            }
+        }
+        temp = temp->next;
+    }
+    if (count == 0)
+    {
+        cout << "Data tidak ditemukan" << endl;
+    }
+}
+void search_booyer2(lapangan *head, string pat)
+{
+    int m = pat.size();
+    int count;
+    lapangan *temp = head;
+    while (temp != NULL)
+    {
+        int n = temp->fasilitas_lapangan.size();
+        int badChar[NO_OF_CHARS];
+        badCharHeuristic(pat, m, badChar);
+        int s = 0;
+        while (s <= (n - m))
+        {
+            int j = m - 1;
+            while (j >= 0 && pat[j] == temp->fasilitas_lapangan[s + j])
+            {
+                j--;
+            }
+            if (j < 0)
+            {
+                cout << "====================================================" << endl;
+                cout << "|| no_lapangan: " << temp->no_lapangan << endl;
+                cout << "|| jenis_lapangan : " << temp->jenis_lapangan << endl;
+                cout << "|| fasilitas_lapangan : " << temp->fasilitas_lapangan << endl;
+                cout << "|| status_lapangan/Berat : " << temp->status_lapangan << endl;
+                cout << "|| Harga : " << temp->harga << endl;
+                cout << "====================================================" << endl;
+                count++;
+                break;
+            }
+            else
+            {
+                s += max(1, j - badChar[temp->status_lapangan[s + j]]);
+            }
+        }
+        temp = temp->next;
+    }
+    if (count == 0)
+    {
+        cout << "Data tidak ditemukan" << endl;
+    }
+}
+
+
 // ========================================= menulis dan baca csv =================================================
 // penulisan dan pembacaan ke csv
 // Fungsi untuk menulis data pengguna ke dalam file CSV
@@ -656,9 +830,21 @@ void bacaDariCSV(lapangan *&head, lapangan *&tail)
     cout << "Data telah dibaca dari file data_lapangan.csv" << endl;
 }
 
-
+void fixPrevious(lapangan **head, lapangan **tail)
+{
+    lapangan *temp = *head;
+    lapangan *prev = NULL;
+    while (temp != NULL)
+    {
+        temp->prev = prev;
+        prev = temp;
+        temp = temp->next;
+    }
+    *tail = prev;
+}
 
 int main() {
+    
     // Variabel yang digunakan
     user* head_user = nullptr;
     user* tail_user = nullptr;
@@ -692,6 +878,8 @@ int main() {
                 cout << "|| 2. Lihat Data lapangan         ||" << endl;
                 cout << "|| 3. Update Data lapangan        ||" << endl;
                 cout << "|| 4. Hapus Data lapangan         ||" << endl;
+                cout << "|| 7. Cari                        ||" << endl;
+                cout << "|| 8. Short                       ||" << endl;
                 cout << "|| 9. Lihat Daftar Pengguna       ||" << endl;
                 cout << "|| 0. Logout                      ||" << endl;
                 cout << "====================================" << endl;
@@ -703,7 +891,8 @@ int main() {
                 cout << "====================================" << endl;
                 cout << "||       Menu Toko Badminton      ||" << endl;
                 cout << "===================================" << endl;
-                cout << "|| 1. (ini user biasa)            ||" << endl;
+                cout << "|| 7. Cari                        ||" << endl;
+                cout << "|| 8. Short                       ||" << endl;
                 cout << "|| 0. Logout                      ||" << endl;
                 cout << "====================================" << endl;
             }
@@ -775,7 +964,7 @@ int main() {
             update(head_lapangan, idx);
         } else if (pilihan == 4 && isAdminLoggedIn)
         {
-            /* code */
+            /* hapus */
             int pilih2;
             displayHead(head_lapangan, tail_lapangan);
             while (true) {
@@ -807,12 +996,162 @@ int main() {
                     cout << "Pilihan tidak valid." << endl;
                 }
             }
+        } else if (pilihan == 7 && isAdminLoggedIn)
+        {
+            /* For admin */
+            int pilihseacrh;
+            while (true)
+            {
+                
+                cout << "===================================" << endl;
+                cout << "||         Menu Searching        ||" << endl;
+                cout << "===================================" << endl;
+                cout << "|| 1. Search Jenis               ||" << endl;
+                cout << "|| 2. Search Fasilitas           ||" << endl;
+                cout << "===================================" << endl;
+                cout << "Pilih : ";
+                cin >> pilihseacrh;
+                cout << "____________" << endl;
+                if (pilihseacrh == 1)
+                {
+                    string search;
+                    shellSort2(&head_lapangan, length(head_lapangan));
+                    cout << "Masukkan Nama Barang :";
+                    cin >> search;
+                    cout << "____________" << endl;
+                    search_booyer(head_lapangan, search);
+                    break;
+                }
+                else if (pilihseacrh == 2)
+                {
+                    string search;
+                    shellSort2(&head_lapangan, length(head_lapangan));
+                    cout << "Masukkan Jenis Barang :";
+                    cin >> search;
+                    cout << "____________" << endl;
+                    search_booyer2(head_lapangan, search);
+                    break;
+                }
+                else
+                {
+                    cout << "Pilihan tidak valid." << endl;
+                }
+            }
+        } else if(pilihan == 7 && loginuser != nullptr){
+            int pilihseacrh;
+            while (true)
+            {
+                // for user
+                cout << "====================================" << endl;
+                cout << "||         Menu Searching        ||" << endl;
+                cout << "===================================" << endl;
+                cout << "|| 1. Search Jenis               ||" << endl;
+                cout << "|| 2. Search Status              ||" << endl;
+                cout << "====================================" << endl;
+                cout << "Pilih : ";
+                cin >> pilihseacrh;
+                cout << "____________" << endl;
+                if (pilihseacrh == 1)
+                {
+                    string search;
+                    shellSort2(&head_lapangan, length(head_lapangan));
+                    cout << "Masukkan Nama Barang :";
+                    cin >> search;
+                    cout << "____________" << endl;
+                    search_booyer(head_lapangan, search);
+                    break;
+                }
+                else if (pilihseacrh == 2)
+                {
+                    string search;
+                    shellSort2(&head_lapangan, length(head_lapangan));
+                    cout << "Masukkan Jenis Barang :";
+                    cin >> search;
+                    cout << "____________" << endl;
+                    search_booyer1(head_lapangan, search);
+                    break;
+                }
+                else
+                {
+                    cout << "Pilihan tidak valid." << endl;
+                }
+            }
+        } else if (pilihan == 8 && loginuser != nullptr){
+            int pilih2;
+            while (true)
+            {
+                cout << "================================" << endl;
+                cout << "||        MENU SORT            ||" << endl;
+                cout << "================================" << endl;
+                cout << "|| 1.        ASC               ||" << endl;
+                cout << "|| 2.        DESC              ||" << endl;
+                cout << "================================" << endl;
+                cout << "Pilih : ";
+                cin >> pilih2;
+                if (pilih2 == 1)
+                {
+                    int pilih1;
+                    while (true)
+                    {
+                        cout << "====================================" << endl;
+                        cout << "||          MENU SORT             ||" << endl;
+                        cout << "====================================" << endl;
+                        cout << "|| 1.     Sorting By Nama         ||" << endl;
+                        cout << "|| 2.     Sorting By Harga        ||" << endl;
+                        cout << "====================================" << endl;
+                        cout << "Pilih : ";
+                        cin >> pilih1;
+                        if (pilih1 == 1)
+                        {
+                            shellSort(&head_lapangan, length(head_lapangan));
+                            fixPrevious(&head_lapangan, &tail_lapangan);
+                            break;
+                        }
+                        else if (pilih1 == 2)
+                        {
+                            shellSort3(&head_lapangan, length(head_lapangan));
+                            fixPrevious(&head_lapangan, &tail_lapangan);
+                            break;
+                        }
+                    }
+                }
+                else if (pilih2 == 2)
+                {
+                    int pilih1;
+                    while (true)
+                    {
+                        cout << "====================================" << endl;
+                        cout << "||          MENU SORT             ||" << endl;
+                        cout << "====================================" << endl;
+                        cout << "|| 1.     Sorting By Nama         ||" << endl;
+                        cout << "|| 2.     Sorting By Harga        ||" << endl;
+                        cout << "====================================" << endl;
+                        cout << "Pilih : ";
+                        cin >> pilih1;
+                        if (pilih1 == 1)
+                        {
+                            shellSort2(&head_lapangan, length(head_lapangan));
+                            fixPrevious(&head_lapangan, &tail_lapangan);
+                            break;
+                        }
+                        else if (pilih1 == 2)
+                        {
+                            shellSort4(&head_lapangan, length(head_lapangan));
+                            fixPrevious(&head_lapangan, &tail_lapangan);
+                            break;
+                        }
+                    }
+                }
+                break; // Perlu ada break di sini agar kembali ke menu utama
+            }
         } else if (pilihan == 2 && loginuser == nullptr) {
             // Login
             string username, password;
             cout << "Masukkan username: ";
+            //getline(cin, username);
             cin >> username;
             cout << "Masukkan password: ";
+            //getline(cin, password);
             cin >> password;
             loginuser = isUserValid(head_user, username, password);
             if (loginuser != nullptr) {
