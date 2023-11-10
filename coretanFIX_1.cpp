@@ -264,9 +264,10 @@ user *cariUser(string username, user *head_user)
 }
 
 // Fungsi untuk menmabah data riwayat login ke dalam csv file
-void tambahLoginToCSV(const string &username, const string &timestamp)
+void tambahLoginToCSV(string &username, string &timestamp)
 {
   ofstream csvFile("login_history.csv", ios::app);
+
   if (csvFile.is_open())
   {
     csvFile << username << "," << timestamp << endl;
@@ -320,15 +321,16 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
 }
 
 // Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
-user *isUserValid(user *head_user, string username, string password,
-                  const string &now)
+user *isUserValid(user *head_user, string username, string password, string now)
 {
-  user *user = cariUser(username, head_user);
-  if (user != nullptr && user->password == password)
+  user *foundUser = finduser(username, head_user);
+
+  if (foundUser != nullptr && foundUser->password == password)
   {
-    tambahLoginToCSV(username, now);// ini untuk mencatat riwayaat login history agar masuk csv
-    return user;
+    tambahLoginToCSV(username, now);
+    return foundUser;
   }
+
   return nullptr;
 }
 
