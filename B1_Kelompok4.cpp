@@ -2001,9 +2001,8 @@ int main()
     else if (pilihan == 2 && loginuser == nullptr)
     {
       // Login
-      time_t now;
-      time(&now);
-      char *now_string = ctime(&now);
+      time(&now); //Memanggil fungsi time untuk mendapatkan waktu saat ini (dalam detik sejak epoch) dan menyimpannya dalam variabel now.
+      char *now_string = ctime(&now); //Menggunakan fungsi ctime untuk mengonversi nilai now (yang berisi waktu dalam detik sejak epoch) ke dalam bentuk string yang berisi informasi tanggal dan waktu. String ini disimpan dalam variabel now_string.
       string username, password;
       cout << "Masukkan username: ";
       fflush(stdin);
