@@ -266,7 +266,7 @@ user *cariUser(string username, user *head_user)
 // Fungsi untuk menmabah data riwayat login ke dalam csv file
 void tambahLoginToCSV(string &username, string &timestamp)
 {
-  ofstream csvFile("login_history.csv", ios::app);
+  ofstream csvFile("B1_Kelompok4/login_history.csv", ios::app);
 
   if (csvFile.is_open())
   {
@@ -282,7 +282,7 @@ void tambahLoginToCSV(string &username, string &timestamp)
 // Fungsi untuk membaca data riwayat login dari csv file
 void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
 {
-  ifstream csvFile("login_history.csv");
+  ifstream csvFile("B1_Kelompok4/login_history.csv");
   if (csvFile.is_open())
   {
     string line;
@@ -323,7 +323,7 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
 // Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
 user *isUserValid(user *head_user, string username, string password, string now)
 {
-  user *foundUser = finduser(username, head_user);
+  user *foundUser = cariUser(username, head_user);
 
   if (foundUser != nullptr && foundUser->password == password)
   {
@@ -981,7 +981,7 @@ void search_booyer1(lapangan *head, string pat)
 // csv Fungsi untuk menulis data pengguna ke dalam file CSV
 void writeUserToCSV(user *newUser)
 {
-  ofstream file("users.csv"); // Membuka berkas untuk penulisan (ios::app untuk
+  ofstream file("B1_Kelompok4/users.csv"); // Membuka berkas untuk penulisan (ios::app untuk
                              // menambahkan data ke berkas yang ada)
   user *curr = newUser;
   if (file.is_open())
@@ -1001,7 +1001,7 @@ void writeUserToCSV(user *newUser)
 // Fungsi untuk membaca data pengguna dari file CSV
 void readUsersFromCSV(user *&head_user, user *&tail_user)
 {
-  ifstream file("users.csv");// ini sebelumnya user.csv
+  ifstream file("B1_Kelompok4/users.csv");// ini sebelumnya user.csv
   if (file.is_open())
   {
     string line;
@@ -1043,7 +1043,7 @@ void readUsersFromCSV(user *&head_user, user *&tail_user)
 // Fungsi Untuk Menyimpan Struct Lapanngan ke dalam CSV file
 void simpanKeCSV(lapangan *head)
 {
-  ofstream file("data_lapangan.csv");
+  ofstream file("B1_Kelompok4/data_lapangan.csv");
   if (!file.is_open())
   {
     cout << "Gagal membuka file data_lapangan.csv" << endl;
@@ -1065,7 +1065,7 @@ void simpanKeCSV(lapangan *head)
 // Fungsi Untuk Membaca CSV File Untuk Data Lapangan
 void bacaDariCSV(lapangan *&head, lapangan *&tail)
 {
-  ifstream file("data_lapangan.csv");
+  ifstream file("B1_Kelompok4/data_lapangan.csv");
   if (!file.is_open())
   {
     cout << "File data_lapangan.csv tidak ditemukan." << endl;
@@ -1262,7 +1262,7 @@ void display_pesanan(pesanan *head, pesanan *tail){
 //baca csv pesanan
 void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
 {
-  ifstream file("data_pesanan.csv");
+  ifstream file("B1_Kelompok4/data_pesanan.csv");
   if (!file.is_open())
   {
     cout << "File data_pesanan.csv tidak ditemukan." << endl;
@@ -1331,7 +1331,7 @@ void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
 
 void simpanPesananKeCSV(pesanan *head, pesanan *tail)
 {
-  ofstream file("data_pesanan.csv");
+  ofstream file("B1_Kelompok4/data_pesanan.csv");
   if (!file.is_open())
   {
     cerr << "Gagal membuka file data_pesanan.csv" << endl;
