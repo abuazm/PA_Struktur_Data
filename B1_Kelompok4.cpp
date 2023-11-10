@@ -249,51 +249,55 @@ string str_nokosong(string perintah)
 
 
 // Fungsi untuk mencari apakah username sudah digunakan
-user *cariUser(string username, user *head_user)
+user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter 
 {
   user *current = head_user;
-  while (current != nullptr)
+  while (current != nullptr) // loop while yang berjalan selama current tidak null
   {
-    if (current->username == username)
-    {
+    if (current->username == username) // jika bernilai true maka fungsi berakhir sampai sini.
+    {                                  //artinya ada username yang sama maka loop tidak dilanjutkan 
       return current;
     }
-    current = current->next;
+    current = current->next;          // dan jika bernilai false maka akan melanjutkan pencarian
   }
   return nullptr;
 }
 
+
 // Fungsi untuk menmabah data riwayat login ke dalam csv file
 void tambahLoginToCSV(string &username, string &timestamp)
 {
-  ofstream csvFile("B1_Kelompok4/login_history.csv", ios::app);
-
-  if (csvFile.is_open())
+  ofstream csvFile("B1_Kelompok4/login_history.csv", ios::app); // membuka file csv menggunakan ofstream, kemudian ios::app membuka file dalam mode append
+                                                                //yaitu mode di mana data baru akan ditambahkan ke akhir file tanpa menghapus data yang sudah ada.
+  if (csvFile.is_open())    //Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
   {
-    csvFile << username << "," << timestamp << endl;
-    csvFile.close();
-  }
+    csvFile << username << "," << timestamp << endl; //Menulis data ke file CSV. Data yang ditulis adalah username, tanda koma (,) 
+    csvFile.close();                                 //Timestamp dan karakter newline (endl) untuk pindah ke baris berikutnya di dalam file.
+  }        // Setelah menulis data, file ditutup untuk memastikan perubahan tersimpan.
   else
   {
     cout << "Gagal membuka file CSV." << endl;
-  }
+  } //Jika file tidak dapat dibuka, program memasuki blok else dan mencetak pesan kesalahan ke Terminal, memberitahu bahwa pembukaan file CSV gagal.
 }
+
+
 
 // Fungsi untuk membaca data riwayat login dari csv file
 void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
 {
-  ifstream csvFile("B1_Kelompok4/login_history.csv");
-  if (csvFile.is_open())
+  ifstream csvFile("B1_Kelompok4/login_history.csv");  //Membuka objek ifstream (input file stream) dengan nama csvFile dan membuka file "B1_Kelompok4/login_history.csv" untuk dibaca.
+  if (csvFile.is_open())  //Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
   {
     string line;
-    while (getline(csvFile, line))
+    while (getline(csvFile, line)) //Membaca setiap baris dari file CSV menggunakan loop while.
     {
-      size_t commaPos = line.find(",");
-      if (commaPos != string::npos)
+      size_t commaPos = line.find(","); //Menemukan posisi koma dalam baris menggunakan find.
+      if (commaPos != string::npos)     //Memeriksa apakah koma ditemukan dalam baris.
+
       {
-        string username = line.substr(0, commaPos);
-        string timestamp = line.substr(commaPos + 1);
-        LoginInfo *newLogin = new LoginInfo;
+        string username = line.substr(0, commaPos);  // Mendapatkan username dan timestamp dari baris
+        string timestamp = line.substr(commaPos + 1);// menggunakan substr berdasarkan posisi koma.
+        LoginInfo *newLogin = new LoginInfo;        // Membuat node baru LoginInfo untuk menyimpan informasi login.
         newLogin->username = username;
         newLogin->timestamp = timestamp;
         newLogin->next = nullptr;
@@ -301,10 +305,12 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
         if (head == nullptr)
         {
           head = newLogin;
-          tail = newLogin;
-          newLogin->prev = nullptr;
-        }
-        else
+          tail = newLogin;    //Jika linked list masih kosong (head == nullptr), maka node baru menjadi head dan tail, dan prev diatur menjadi nullptr.
+          newLogin->prev = nullptr;  
+
+       
+        }    //Jika linked list sudah berisi (head != nullptr), maka node baru ditambahkan di belakang (tail->next) 
+        else //dan prev diatur menjadi tail. Kemudian, tail diupdate menjadi node baru.
         {
           tail->next = newLogin;
           newLogin->prev = tail;
@@ -312,12 +318,12 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
         }
       }
     }
-    csvFile.close();
+    csvFile.close(); //Menutup file setelah selesai membaca.
   }
   else
   {
-    cout << "Gagal membuka file CSV." << endl;
-  }
+    cout << "Gagal membuka file CSV." << endl; //Jika file tidak dapat dibuka, program memasuki blok else dan 
+  }                                            //mencetak pesan kesalahan ke terminal, memberitahu bahwa pembukaan file CSV gagal.
 }
 
 // Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
