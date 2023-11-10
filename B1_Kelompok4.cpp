@@ -353,7 +353,7 @@ void bacaLapKeCSV(lapangan *&head, lapangan *&tail)
     // Membaca data lapangan dari stringstream, dengan setiap kolom dipisahkan oleh koma.
     // Jika ada kesalahan dalam membaca, program mencetak pesan kesalahan dan keluar dari loop.
     {
-      cout << "Error reading line from CSV." << endl;
+      cout << "Data CSV Tidak Ditemukan." << endl;
       break;
     }
 
@@ -381,65 +381,63 @@ void bacaLapKeCSV(lapangan *&head, lapangan *&tail)
     }
   }
 
-  file.close();    // Berkas ditutup setelah selesai membaca.
+  file.close();                                                    // Berkas ditutup setelah selesai membaca.
   cout << "Data telah dibaca dari file data_lapangan.csv" << endl; // Mencetak pesan bahwa data telah berhasil dibaca dari berkas.
 }
 
-
-//Fungsi Untuk Simpan Pesanan ke dalam csv file
+// Fungsi Untuk Simpan Pesanan ke dalam csv file
 void simpanPesananKeCSV(pesanan *head, pesanan *tail)
 {
-  ofstream file("B1_Kelompok4/data_pesanan.csv"); //Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk ditulis menggunakan ofstream.
+  ofstream file("B1_Kelompok4/data_pesanan.csv"); // Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk ditulis menggunakan ofstream.
   if (!file.is_open())
   {
-    cout << "Gagal membuka file data_pesanan.csv" << endl; //Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan kesalahan.
+    cout << "Gagal membuka file data_pesanan.csv" << endl; // Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan kesalahan.
     return;
   }
 
-  pesanan *current = head; //Menggunakan pointer current untuk iterasi melalui linked list pesanan
+  pesanan *current = head; // Menggunakan pointer current untuk iterasi melalui linked list pesanan
   while (current)
   {
     file << current->username << ",";
     file << current->nomor_hp << ",";
     file << current->no_lapangan << ",";
     file << current->hari << "\n";
-    //Menulis setiap atribut pesanan (username, nomor_hp, no_lapangan, dan hari) ke dalam berkas dengan dipisahkan oleh koma.
-    current = current->next; //Setelah menulis, pointer current dipindahkan ke pesanan berikutnya.
+    // Menulis setiap atribut pesanan (username, nomor_hp, no_lapangan, dan hari) ke dalam berkas dengan dipisahkan oleh koma.
+    current = current->next; // Setelah menulis, pointer current dipindahkan ke pesanan berikutnya.
   }
 
-  file.close(); //Berkas ditutup setelah selesai menulis.
-  cout << "Data pesanan telah disimpan ke dalam file data_pesanan.csv" << endl; //Mencetak pesan bahwa data pesanan telah berhasil disimpan ke dalam berkas.
+  file.close();                                                                 // Berkas ditutup setelah selesai menulis.
+  cout << "Data pesanan telah disimpan ke dalam file data_pesanan.csv" << endl; // Mencetak pesan bahwa data pesanan telah berhasil disimpan ke dalam berkas.
 }
-
 
 // Fungsi baca Pesanan CSV
 void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
 {
-  ifstream file("B1_Kelompok4/data_pesanan.csv"); //Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk dibaca menggunakan ifstream.
-  if (!file.is_open()) //Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan dan keluar dari fungsi.
+  ifstream file("B1_Kelompok4/data_pesanan.csv"); // Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk dibaca menggunakan ifstream.
+  if (!file.is_open())                            // Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan dan keluar dari fungsi.
   {
     cout << "File data_pesanan.csv tidak ditemukan." << endl;
     return;
   }
 
   string line;
-  while (getline(file, line)) //Menggunakan getline untuk membaca setiap baris dari berkas.
+  while (getline(file, line)) // Menggunakan getline untuk membaca setiap baris dari berkas.
   {
-    stringstream ss(line); //Membuat objek stringstream (ss) untuk memproses baris yang telah dibaca.
+    stringstream ss(line); // Membuat objek stringstream (ss) untuk memproses baris yang telah dibaca.
     string username, nomor_hp, no_lapangan, hari;
 
     if (!getline(ss, username, ',') ||
         !getline(ss, nomor_hp, ',') ||
         !getline(ss, no_lapangan, ',') ||
         !getline(ss, hari, ','))
-        //Menggunakan getline dari stringstream untuk membaca setiap kolom (username, nomor_hp, no_lapangan, dan hari) dari baris CSV.
+    // Menggunakan getline dari stringstream untuk membaca setiap kolom (username, nomor_hp, no_lapangan, dan hari) dari baris CSV.
     {
-      cout << "Error reading line from CSV." << endl;
+      cout << "Data CSV Tidak Ditemukan." << endl;
       break;
     }
-    int no_lap = stoi(no_lapangan); //Mengonversi nomor lapangan dari string ke integer.
+    int no_lap = stoi(no_lapangan); // Mengonversi nomor lapangan dari string ke integer.
     lapangan *temp_lapangan = head_lapangan;
-    while (temp_lapangan != nullptr) //Mencari lapangan dengan nomor yang sesuai dalam linked list lapangan (head_lapangan).
+    while (temp_lapangan != nullptr) // Mencari lapangan dengan nomor yang sesuai dalam linked list lapangan (head_lapangan).
     {
       if (temp_lapangan->no_lapangan == no_lap)
       {
@@ -448,18 +446,18 @@ void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
       temp_lapangan = temp_lapangan->next;
     }
 
-    //Membuat node baru untuk pesanan.
+    // Membuat node baru untuk pesanan.
     pesanan *pesan = new pesanan;
-    //Mengisi data pesanan dari baris CSV ke dalam node pesanan.
+    // Mengisi data pesanan dari baris CSV ke dalam node pesanan.
     pesan->username = username;
     pesan->nomor_hp = nomor_hp;
     pesan->no_lapangan = no_lap;
     pesan->hari = hari;
 
-    for (int i = 0; i < 7; i++) //Melakukan iterasi melalui hari-hari yang tersedia pada lapangan.
+    for (int i = 0; i < 7; i++) // Melakukan iterasi melalui hari-hari yang tersedia pada lapangan.
     {
 
-      //Jika hari pesanan cocok dengan salah satu hari lapangan, maka mengupdate jadwal lapangan dengan menghapus hari/ dan no lap tersebut.
+      // Jika hari pesanan cocok dengan salah satu hari lapangan, maka mengupdate jadwal lapangan dengan menghapus hari/ dan no lap tersebut.
       if (hari == temp_lapangan->hari[i])
       {
 
@@ -467,27 +465,25 @@ void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
       }
     }
 
-    pesan->next = nullptr; //Menambahkan node pesanan ke linked list pesanan.
+    pesan->next = nullptr; // Menambahkan node pesanan ke linked list pesanan.
     pesan->prev = tail;
 
-    if (head == nullptr) //Jika linked list pesanan kosong, node pesanan baru menjadi head dan tail.
+    if (head == nullptr) // Jika linked list pesanan kosong, node pesanan baru menjadi head dan tail.
     {
       head = pesan;
       pesan->prev = nullptr;
       tail = pesan;
     }
-    else //Jika tidak kosong, node pesanan baru ditambahkan ke ujung linked list dan tail diupdate.
+    else // Jika tidak kosong, node pesanan baru ditambahkan ke ujung linked list dan tail diupdate.
     {
       tail->next = pesan;
       tail = pesan;
     }
   }
 
-  file.close(); //Berkas ditutup setelah selesai membaca.
-  cout << "Data pesanan telah dibaca dari file data_pesanan.csv" << endl; //Mencetak pesan bahwa data pesanan telah berhasil dibaca dari berkas.
+  file.close();                                                           // Berkas ditutup setelah selesai membaca.
+  cout << "Data pesanan telah dibaca dari file data_pesanan.csv" << endl; // Mencetak pesan bahwa data pesanan telah berhasil dibaca dari berkas.
 }
-
-
 
 // Fungsi untuk menmabah data riwayat login ke dalam csv file
 void simpanLoginKeCSV(string &username, string &timestamp)
@@ -550,9 +546,6 @@ void bacaLoginDariCSV(LoginInfo *&head, LoginInfo *&tail)
 
 //===============================================================     CSV FILE  END   =====================================================================
 
-
-
-
 void displayHistoryLogin(LoginInfo *head)
 {
   LoginInfo *current = head; // Inisialisasi pointer current dengan head untuk iterasi melalui linked list.
@@ -604,7 +597,6 @@ void displayHistoryLogin(LoginInfo *head)
   }
 }
 
-
 // Fungsi untuk mencari apakah username sudah digunakan
 user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter
 {
@@ -619,7 +611,6 @@ user *cariUser(string username, user *head_user) // fungsi yang mengambil dua pa
   }
   return nullptr; // Jika selesai melalui seluruh linked list dan tidak menemukan node dengan username yang sesuai,
 } // mengembalikan nullptr untuk menandakan bahwa pengguna tidak ditemukan.
-
 
 //  Fungsi untuk membuat user baru
 user *Newuser(user *head_user) // Membuat node baru untuk user menggunakan operator new.
@@ -647,8 +638,6 @@ user *Newuser(user *head_user) // Membuat node baru untuk user menggunakan opera
   }
 }
 
-
-
 // Fungsi Untuk Registrasi(User)
 void tambahUser(user *&head_user, user *&tail_user)
 {
@@ -674,12 +663,11 @@ void tambahUser(user *&head_user, user *&tail_user)
   }
 }
 
-
 // Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
 user *isUserValid(user *head_user, string username, string password, string now)
 {
-  user *foundUser = cariUser(username, head_user); // Memanggil fungsi cariUser untuk mencari user berdasarkan username dalam linked list user (head_user)
-                                                   // Hasilnya disimpan dalam pointer foundUser.
+  user *foundUser = cariUser(username, head_user);             // Memanggil fungsi cariUser untuk mencari user berdasarkan username dalam linked list user (head_user)
+                                                               // Hasilnya disimpan dalam pointer foundUser.
   if (foundUser != nullptr && foundUser->password == password) // Memeriksa apakah user ditemukan (pointer foundUser bukan nullptr) dan
   {                                                            // apakah password yang dimasukkan sesuai dengan password user yang ditemukan.
     simpanLoginKeCSV(username, now);                           // Jika user ditemukan dan password sesuai, memanggil fungsi simpanLoginKeCSV untuk
@@ -1380,8 +1368,6 @@ void display_pesanan(pesanan *head, pesanan *tail)
   }
 }
 
-
-
 // =============== hapus pesanan ============= // admin
 // 1. pesanan -> display & ->hapus 2. pashapus pakai index
 // Fungsi untuk menampilkan daftar pesanan
@@ -1998,11 +1984,11 @@ int main()
       // display pesanan yang telah user itu sendiri
       dispesus(head_pesanan, tail_pesanan, loginuser);
     }
+      // ================================================================= login Logout =============================================================================
     else if (pilihan == 2 && loginuser == nullptr)
     {
-      // Login
-      time(&now); //Memanggil fungsi time untuk mendapatkan waktu saat ini (dalam detik sejak epoch) dan menyimpannya dalam variabel now.
-      char *now_string = ctime(&now); //Menggunakan fungsi ctime untuk mengonversi nilai now (yang berisi waktu dalam detik sejak epoch) ke dalam bentuk string yang berisi informasi tanggal dan waktu. String ini disimpan dalam variabel now_string.
+      time(&now);                     // Memanggil fungsi time untuk mendapatkan waktu saat ini (dalam detik sejak epoch) dan menyimpannya dalam variabel now.
+      char *now_string = ctime(&now); // Menggunakan fungsi ctime untuk mengonversi nilai now (yang berisi waktu dalam detik sejak epoch) ke dalam bentuk string yang berisi informasi tanggal dan waktu. String ini disimpan dalam variabel now_string.
       string username, password;
       cout << "Masukkan username: ";
       fflush(stdin);
