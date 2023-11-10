@@ -1,9 +1,9 @@
 #include <bits/stdc++.h> //
-#include <cstring> //Header ini berfungsi untuk operasi string dan array of characters.
-#include <ctime> //Header ini berfungsi untuk bekerja dengan waktu dan tanggal,
-#include <fstream> //Header ini menyediakan kelas-kelas untuk operasi berkas (file), seperti ofstream dan ifstream.
-#include <iostream> //Header ini berisi definisi dari objek input-output seperti (cin dan cout).
-#include <sstream> // Header ini berfungsi untuk mengkonversi antara string dengan tipe data lainnya
+#include <cstring>       //Header ini berfungsi untuk operasi string dan array of characters.
+#include <ctime>         //Header ini berfungsi untuk bekerja dengan waktu dan tanggal,
+#include <fstream>       //Header ini menyediakan kelas-kelas untuk operasi berkas (file), seperti ofstream dan ifstream.
+#include <iostream>      //Header ini berisi definisi dari objek input-output seperti (cin dan cout).
+#include <sstream>       // Header ini berfungsi untuk mengkonversi antara string dengan tipe data lainnya
 // #include <string>
 
 using namespace std; // agar tidak perlu menuliskan std:: setiap cout
@@ -45,7 +45,7 @@ struct LoginInfo
   LoginInfo *prev;
 };
 
-//Struct ini digunakan untuk membuat pesanan.
+// Struct ini digunakan untuk membuat pesanan.
 struct pesanan
 {
   string username;
@@ -76,16 +76,15 @@ bool ver_int(string input)
   return false; // Semua karakter adalah integer
 }
 
-
-
-// error handling untuk menginput no lapangan agar  khusus integer 
-int noLap() {
+// error handling untuk menginput no lapangan agar  khusus integer
+int noLap()
+{
   string reinput;
   cout << "Masukkan No Lapangan : ";
   getline(cin, reinput);
   while (true)
   {
-    bool par = ver_int(reinput); // verifikasi inputan agar 
+    bool par = ver_int(reinput); // verifikasi inputan agar
     if (par)
     {
       cout << "Masukkan No Lapangan Input Integer : ";
@@ -93,27 +92,27 @@ int noLap() {
     }
     else
     {
-      
+
       int number;
-      stringstream ss(reinput); //untuk koversi ke tipe data lain
-      if (ss >> number) //variabel ss menjadi int
+      stringstream ss(reinput); // untuk koversi ke tipe data lain
+      if (ss >> number)         // variabel ss menjadi int
       {
         return number;
       }
       else
       {
-        
+
         cout << "Tidak Boleh Kosong ! : ";
-        fflush(stdin);  //membersihkan buffer input
+        fflush(stdin); // membersihkan buffer input
         getline(cin, reinput);
       }
     }
   }
 }
 
-
-// error handling untuk menginput harga agar khusus integer 
-int hargaint() {
+// error handling untuk menginput harga agar khusus integer
+int hargaint()
+{
   string reinput;
   cout << "Masukkan Harga: ";
   getline(cin, reinput);
@@ -122,13 +121,13 @@ int hargaint() {
     bool par = ver_int(reinput);
     if (par)
     {
-      
+
       cout << "Hanya bisa Masukkan Bilangan Bulat : ";
       getline(cin, reinput);
     }
     else
     {
-      
+
       int number;
       stringstream ss(reinput);
       if (ss >> number)
@@ -137,7 +136,7 @@ int hargaint() {
       }
       else
       {
-        
+
         cout << "Tidak Boleh Kosong ! : ";
         fflush(stdin);
         getline(cin, reinput);
@@ -145,7 +144,7 @@ int hargaint() {
     }
   }
 }
-//error handling untuk inputan string ke integer  khusus integer 
+// error handling untuk inputan string ke integer  khusus integer
 int paksaint()
 {
   string reinput;
@@ -156,13 +155,13 @@ int paksaint()
     bool par = ver_int(reinput);
     if (par)
     {
-      
+
       cout << "Hanya bisa Masukkan angka : ";
       getline(cin, reinput);
     }
     else
     {
-      
+
       int number;
       stringstream ss(reinput);
       if (ss >> number)
@@ -171,7 +170,7 @@ int paksaint()
       }
       else
       {
-        
+
         cout << "Tidak Boleh Kosong ! : ";
         fflush(stdin);
         getline(cin, reinput);
@@ -180,24 +179,24 @@ int paksaint()
   }
 }
 
-//error handling untuk inputan string ke integer  khusus integer 
+// error handling untuk inputan string ke integer  khusus integer
 int cosint(string perintah)
 {
   string reinput;
-  cout << perintah ;
+  cout << perintah;
   getline(cin, reinput);
   while (true)
   {
     bool par = ver_int(reinput);
     if (par)
     {
-      
+
       cout << "Hanya bisa Masukkan angka : ";
       getline(cin, reinput);
     }
     else
     {
-      
+
       int number;
       stringstream ss(reinput);
       if (ss >> number)
@@ -206,7 +205,7 @@ int cosint(string perintah)
       }
       else
       {
-        
+
         cout << "Tidak Boleh Kosong ! : ";
         fflush(stdin);
         getline(cin, reinput);
@@ -215,7 +214,7 @@ int cosint(string perintah)
   }
 }
 
-bool ver_space(string str)// verifikasi karakter jika haya spasi
+bool ver_space(string str) // verifikasi karakter jika haya spasi
 {
   for (char c : str)
   {
@@ -226,7 +225,6 @@ bool ver_space(string str)// verifikasi karakter jika haya spasi
   }
   return true; // Jika semua karakter adalah spasi
 }
-
 
 // eror paksa input harus string dan tidak boleh kosong
 string str_nokosong(string perintah)
@@ -247,57 +245,282 @@ string str_nokosong(string perintah)
   } while (user_input.empty() || ver_space(user_input));
 }
 
-
-// Fungsi untuk mencari apakah username sudah digunakan
-user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter 
+//===============================================================     CSV FILE  START    =====================================================================
+void simpanUsersToCSV(user *newUser)
 {
-  user *current = head_user;
-  while (current != nullptr) // loop while yang berjalan selama current tidak null
+  ofstream file("B1_Kelompok4/users.csv"); // Membuka berkas untuk penulisan (ios::app untuk
+                                           // menambahkan data ke berkas yang ada)
+  user *curr = newUser;
+  if (file.is_open())
   {
-    if (current->username == username) // jika bernilai true maka fungsi berakhir sampai sini.
-    {                                  //artinya ada username yang sama maka loop tidak dilanjutkan 
-      return current;
+    while (curr != nullptr) // Loop akan berjalan selama pointer curr tidak null, mengunjungi setiap node dalam daftar pengguna.
+
+    { // Menulis data pengguna ke berkas dalam format CSV, dengan setiap kolom dipisahkan oleh koma dan setiap baris diakhiri dengan newline (endl).
+      file << curr->username << "," << curr->password << "," << curr->nomor_hp << endl;
+      curr = curr->next; // Pindah ke node pengguna berikutnya dalam daftar untuk iterasi berikutnya.
     }
-    current = current->next;          // dan jika bernilai false maka akan melanjutkan pencarian
   }
-  return nullptr;
+  else
+  {
+    cout << "Gagal membuka berkas CSV" << endl;
+  }
 }
+
+// Fungsi untuk membaca data pengguna dari file CSV
+void bacaUsersFromCSV(user *&head_user, user *&tail_user)
+{
+  ifstream file("B1_Kelompok4/users.csv"); // digunakan untuk membaca dari berkas.
+  if (file.is_open())
+  {
+    string line;
+    while (getline(file, line))
+    {                        // Loop akan berjalan selama masih ada baris yang dapat dibaca dari berkas.
+      stringstream ss(line); // Membuat objek stringstream untuk memproses baris yang telah dibaca.
+      string username, password, nomor_hp;
+      if (getline(ss, username, ',') && getline(ss, password, ',') &&
+          getline(ss, nomor_hp, ',')) // membaca data pengguna dari stringstream, dengan setiap kolom dipisahkan oleh koma.
+      {
+        // Membuat node pengguna baru.
+        user *newUser = new user;
+        newUser->username = username;
+        newUser->password = password;
+        newUser->nomor_hp = nomor_hp;
+        newUser->next = nullptr;
+        newUser->prev = nullptr;
+        // Mengisi data pengguna ke dalam node baru.
+
+        if (isempty(head_user, tail_user))
+        {
+          head_user = newUser; // Jika kosong, node baru menjadi head dan tail.
+          tail_user = newUser;
+        }
+        else
+        {
+          tail_user->next = newUser; // Jika tidak kosong, node baru ditambahkan ke ujung linked list dan tail diupdate.
+          newUser->prev = tail_user;
+          tail_user = newUser;
+        }
+      }
+    }
+    file.close();
+  }
+  else
+  {
+    cout << "Gagal membuka berkas CSV" << endl;
+  }
+}
+
+// Fungsi Untuk Menyimpan Struct Lapanngan ke dalam CSV file
+void simpanLapKeCSV(lapangan *head)
+{
+  ofstream file("B1_Kelompok4/data_lapangan.csv"); // untuk menulis ke berkas.
+  if (!file.is_open())                             // Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan kesalahan dan keluar dari fungsi.
+  {
+    cout << "Gagal membuka file data_lapangan.csv" << endl;
+    return;
+  }
+  lapangan *current = head;
+  while (current) // Loop akan berjalan selama current tidak null, mengunjungi setiap node dalam daftar lapangan.
+  {
+    file << current->no_lapangan << ",";        // Menulis nomor lapangan ke dalam berkas, diikuti oleh koma.
+    file << current->jenis_lapangan << ",";     // Menulis jenis lapangan ke dalam berkas, diikuti oleh koma.
+    file << current->fasilitas_lapangan << ","; // Menulis fasilitas lapangan ke dalam berkas, diikuti oleh koma.
+    file << current->harga << "\n";             // Menulis harga lapangan ke dalam berkas, diakhiri dengan newline (\n).
+    current = current->next;
+  }
+  file.close(); // Berkas ditutup setelah selesai menulis.
+  cout << "Data telah disimpan ke dalam file data_lapangan.csv" << endl;
+}
+
+// Fungsi Untuk Membaca CSV File Untuk Data Lapangan
+void bacaLapKeCSV(lapangan *&head, lapangan *&tail)
+{
+  ifstream file("B1_Kelompok4/data_lapangan.csv"); // digunakan untuk membaca dari berkas.
+  if (!file.is_open())                             // Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan kesalahan dan keluar dari fungsi.
+  {
+    cout << "File data_lapangan.csv tidak ditemukan." << endl;
+    return;
+  }
+
+  string line;
+  while (getline(file, line)) // Loop akan berjalan selama masih ada baris yang dapat dibaca dari berkas.
+  {
+    stringstream ss(line); // untuk memproses baris yang telah dibaca.
+    string no_lapanganStr, jenis_lapangan, fasilitas_lapangan, hargaStr;
+    if (!getline(ss, no_lapanganStr, ',') ||
+        !getline(ss, jenis_lapangan, ',') ||
+        !getline(ss, fasilitas_lapangan, ',') || !getline(ss, hargaStr, ','))
+    // Membaca data lapangan dari stringstream, dengan setiap kolom dipisahkan oleh koma.
+    // Jika ada kesalahan dalam membaca, program mencetak pesan kesalahan dan keluar dari loop.
+    {
+      cout << "Error reading line from CSV." << endl;
+      break;
+    }
+
+    int harga = stoi(hargaStr);             // Mengonversi string menjadi integer untuk harga dan nomor lapangan.
+    int no_lapangan = stoi(no_lapanganStr); // Mengonversi string menjadi integer untuk harga dan nomor lapangan.
+    lapangan *lpng = new lapangan;          // Membuat node lapangan baru
+    // Mengisi data lapangan ke dalam node baru.
+    lpng->no_lapangan = no_lapangan;
+    lpng->jenis_lapangan = jenis_lapangan;
+    lpng->fasilitas_lapangan = fasilitas_lapangan;
+    lpng->harga = harga;
+    lpng->next = nullptr;
+    lpng->prev = tail;
+
+    if (head == nullptr)
+    { // artinya jika ia data pertama maka ia ditetapkan sebagai head dan tail
+      head = lpng;
+      lpng->prev = nullptr;
+      tail = lpng;
+    }
+    else // Jika tidak kosong, node baru ditambahkan ke ujung linked list dan tail diupdate
+    {
+      tail->next = lpng;
+      tail = lpng;
+    }
+  }
+
+  file.close();    // Berkas ditutup setelah selesai membaca.
+  cout << "Data telah dibaca dari file data_lapangan.csv" << endl; // Mencetak pesan bahwa data telah berhasil dibaca dari berkas.
+}
+
+
+//Fungsi Untuk Simpan Pesanan ke dalam csv file
+void simpanPesananKeCSV(pesanan *head, pesanan *tail)
+{
+  ofstream file("B1_Kelompok4/data_pesanan.csv"); //Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk ditulis menggunakan ofstream.
+  if (!file.is_open())
+  {
+    cout << "Gagal membuka file data_pesanan.csv" << endl; //Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan kesalahan.
+    return;
+  }
+
+  pesanan *current = head; //Menggunakan pointer current untuk iterasi melalui linked list pesanan
+  while (current)
+  {
+    file << current->username << ",";
+    file << current->nomor_hp << ",";
+    file << current->no_lapangan << ",";
+    file << current->hari << "\n";
+    //Menulis setiap atribut pesanan (username, nomor_hp, no_lapangan, dan hari) ke dalam berkas dengan dipisahkan oleh koma.
+    current = current->next; //Setelah menulis, pointer current dipindahkan ke pesanan berikutnya.
+  }
+
+  file.close(); //Berkas ditutup setelah selesai menulis.
+  cout << "Data pesanan telah disimpan ke dalam file data_pesanan.csv" << endl; //Mencetak pesan bahwa data pesanan telah berhasil disimpan ke dalam berkas.
+}
+
+
+// Fungsi baca Pesanan CSV
+void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
+{
+  ifstream file("B1_Kelompok4/data_pesanan.csv"); //Membuka berkas "data_pesanan.csv" pada direktori "B1_Kelompok4" untuk dibaca menggunakan ifstream.
+  if (!file.is_open()) //Memeriksa apakah berkas berhasil dibuka. Jika tidak berhasil, mencetak pesan dan keluar dari fungsi.
+  {
+    cout << "File data_pesanan.csv tidak ditemukan." << endl;
+    return;
+  }
+
+  string line;
+  while (getline(file, line)) //Menggunakan getline untuk membaca setiap baris dari berkas.
+  {
+    stringstream ss(line); //Membuat objek stringstream (ss) untuk memproses baris yang telah dibaca.
+    string username, nomor_hp, no_lapangan, hari;
+
+    if (!getline(ss, username, ',') ||
+        !getline(ss, nomor_hp, ',') ||
+        !getline(ss, no_lapangan, ',') ||
+        !getline(ss, hari, ','))
+        //Menggunakan getline dari stringstream untuk membaca setiap kolom (username, nomor_hp, no_lapangan, dan hari) dari baris CSV.
+    {
+      cout << "Error reading line from CSV." << endl;
+      break;
+    }
+    int no_lap = stoi(no_lapangan); //Mengonversi nomor lapangan dari string ke integer.
+    lapangan *temp_lapangan = head_lapangan;
+    while (temp_lapangan != nullptr) //Mencari lapangan dengan nomor yang sesuai dalam linked list lapangan (head_lapangan).
+    {
+      if (temp_lapangan->no_lapangan == no_lap)
+      {
+        break;
+      }
+      temp_lapangan = temp_lapangan->next;
+    }
+
+    //Membuat node baru untuk pesanan.
+    pesanan *pesan = new pesanan;
+    //Mengisi data pesanan dari baris CSV ke dalam node pesanan.
+    pesan->username = username;
+    pesan->nomor_hp = nomor_hp;
+    pesan->no_lapangan = no_lap;
+    pesan->hari = hari;
+
+    for (int i = 0; i < 7; i++) //Melakukan iterasi melalui hari-hari yang tersedia pada lapangan.
+    {
+
+      //Jika hari pesanan cocok dengan salah satu hari lapangan, maka mengupdate jadwal lapangan dengan menghapus hari/ dan no lap tersebut.
+      if (hari == temp_lapangan->hari[i])
+      {
+
+        temp_lapangan->hari[i] = " ";
+      }
+    }
+
+    pesan->next = nullptr; //Menambahkan node pesanan ke linked list pesanan.
+    pesan->prev = tail;
+
+    if (head == nullptr) //Jika linked list pesanan kosong, node pesanan baru menjadi head dan tail.
+    {
+      head = pesan;
+      pesan->prev = nullptr;
+      tail = pesan;
+    }
+    else //Jika tidak kosong, node pesanan baru ditambahkan ke ujung linked list dan tail diupdate.
+    {
+      tail->next = pesan;
+      tail = pesan;
+    }
+  }
+
+  file.close(); //Berkas ditutup setelah selesai membaca.
+  cout << "Data pesanan telah dibaca dari file data_pesanan.csv" << endl; //Mencetak pesan bahwa data pesanan telah berhasil dibaca dari berkas.
+}
+
 
 
 // Fungsi untuk menmabah data riwayat login ke dalam csv file
-void tambahLoginToCSV(string &username, string &timestamp)
+void simpanLoginKeCSV(string &username, string &timestamp)
 {
   ofstream csvFile("B1_Kelompok4/login_history.csv", ios::app); // membuka file csv menggunakan ofstream, kemudian ios::app membuka file dalam mode append
-                                                                //yaitu mode di mana data baru akan ditambahkan ke akhir file tanpa menghapus data yang sudah ada.
-  if (csvFile.is_open())    //Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
+                                                                // yaitu mode di mana data baru akan ditambahkan ke akhir file tanpa menghapus data yang sudah ada.
+  if (csvFile.is_open())                                        // Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
   {
-    csvFile << username << "," << timestamp << endl; //Menulis data ke file CSV. Data yang ditulis adalah username, tanda koma (,) 
-    csvFile.close();                                 //Timestamp dan karakter newline (endl) untuk pindah ke baris berikutnya di dalam file.
-  }        // Setelah menulis data, file ditutup untuk memastikan perubahan tersimpan.
+    csvFile << username << "," << timestamp << endl; // Menulis data ke file CSV. Data yang ditulis adalah username, tanda koma (,)
+    csvFile.close();                                 // Timestamp dan karakter newline (endl) untuk pindah ke baris berikutnya di dalam file.
+  }                                                  // Setelah menulis data, file ditutup untuk memastikan perubahan tersimpan.
   else
   {
     cout << "Gagal membuka file CSV." << endl;
-  } //Jika file tidak dapat dibuka, program memasuki blok else dan mencetak pesan kesalahan ke Terminal, memberitahu bahwa pembukaan file CSV gagal.
+  } // Jika file tidak dapat dibuka, program memasuki blok else dan mencetak pesan kesalahan ke Terminal, memberitahu bahwa pembukaan file CSV gagal.
 }
 
-
-
 // Fungsi untuk membaca data riwayat login dari csv file
-void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
+void bacaLoginDariCSV(LoginInfo *&head, LoginInfo *&tail)
 {
-  ifstream csvFile("B1_Kelompok4/login_history.csv");  //Membuka objek ifstream (input file stream) dengan nama csvFile dan membuka file "B1_Kelompok4/login_history.csv" untuk dibaca.
-  if (csvFile.is_open())  //Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
+  ifstream csvFile("B1_Kelompok4/login_history.csv"); // Membuka objek ifstream (input file stream) dengan nama csvFile dan membuka file "B1_Kelompok4/login_history.csv" untuk dibaca.
+  if (csvFile.is_open())                              // Memeriksa apakah file berhasil dibuka. Jika file terbuka, eksekusi kode dalam blok if.
   {
     string line;
-    while (getline(csvFile, line)) //Membaca setiap baris dari file CSV menggunakan loop while.
+    while (getline(csvFile, line)) // Membaca setiap baris dari file CSV menggunakan loop while.
     {
-      size_t commaPos = line.find(","); //Menemukan posisi koma dalam baris menggunakan find.
-      if (commaPos != string::npos)     //Memeriksa apakah koma ditemukan dalam baris.
+      size_t commaPos = line.find(","); // Menemukan posisi koma dalam baris menggunakan find.
+      if (commaPos != string::npos)     // Memeriksa apakah koma ditemukan dalam baris.
 
       {
-        string username = line.substr(0, commaPos);  // Mendapatkan username dan timestamp dari baris
-        string timestamp = line.substr(commaPos + 1);// menggunakan substr berdasarkan posisi koma.
-        LoginInfo *newLogin = new LoginInfo;        // Membuat node baru LoginInfo untuk menyimpan informasi login.
+        string username = line.substr(0, commaPos);   // Mendapatkan username dan timestamp dari baris
+        string timestamp = line.substr(commaPos + 1); // menggunakan substr berdasarkan posisi koma.
+        LoginInfo *newLogin = new LoginInfo;          // Membuat node baru LoginInfo untuk menyimpan informasi login.
         newLogin->username = username;
         newLogin->timestamp = timestamp;
         newLogin->next = nullptr;
@@ -305,12 +528,11 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
         if (head == nullptr)
         {
           head = newLogin;
-          tail = newLogin;    //Jika linked list masih kosong (head == nullptr), maka node baru menjadi head dan tail, dan prev diatur menjadi nullptr.
-          newLogin->prev = nullptr;  
+          tail = newLogin; // Jika linked list masih kosong (head == nullptr), maka node baru menjadi head dan tail, dan prev diatur menjadi nullptr.
+          newLogin->prev = nullptr;
 
-       
-        }    //Jika linked list sudah berisi (head != nullptr), maka node baru ditambahkan di belakang (tail->next) 
-        else //dan prev diatur menjadi tail. Kemudian, tail diupdate menjadi node baru.
+        }    // Jika linked list sudah berisi (head != nullptr), maka node baru ditambahkan di belakang (tail->next)
+        else // dan prev diatur menjadi tail. Kemudian, tail diupdate menjadi node baru.
         {
           tail->next = newLogin;
           newLogin->prev = tail;
@@ -318,77 +540,149 @@ void bacaLoginHistoryFromCSV(LoginInfo *&head, LoginInfo *&tail)
         }
       }
     }
-    csvFile.close(); //Menutup file setelah selesai membaca.
+    csvFile.close(); // Menutup file setelah selesai membaca.
   }
   else
   {
-    cout << "Gagal membuka file CSV." << endl; //Jika file tidak dapat dibuka, program memasuki blok else dan 
-  }                                            //mencetak pesan kesalahan ke terminal, memberitahu bahwa pembukaan file CSV gagal.
+    cout << "Gagal membuka file CSV." << endl; // Jika file tidak dapat dibuka, program memasuki blok else dan
+  }                                            // mencetak pesan kesalahan ke terminal, memberitahu bahwa pembukaan file CSV gagal.
 }
 
-// Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
-user *isUserValid(user *head_user, string username, string password, string now)
-{
-  user *foundUser = cariUser(username, head_user);
+//===============================================================     CSV FILE  END   =====================================================================
 
-  if (foundUser != nullptr && foundUser->password == password)
+
+
+
+void displayHistoryLogin(LoginInfo *head)
+{
+  LoginInfo *current = head; // Inisialisasi pointer current dengan head untuk iterasi melalui linked list.
+  int count = 1;             // Inisialisasi variabel count untuk memberi nomor urut pada riwayat login.
+
+  if (current == nullptr) // Memeriksa apakah linked list kosong.
   {
-    tambahLoginToCSV(username, now);
-    return foundUser;
+    cout << "Tidak ada riwayat login." << endl;
+    return;
   }
 
-  return nullptr;
-}
+  // Buat deque (double-ended queue) untuk menyimpan riwayat login terbaru
+  deque<LoginInfo> recentLogins;
 
-// fungsi2 crud
-//  Fungsi untuk membuat user baru
-user *Newuser(user *head_user)
-{
-  user *newuser = new user;
-  cout << "Masukkan username: ";
-  newuser->username = str_nokosong("Masukkan username : ");
-  fflush(stdin);
-  if (!cariUser(newuser->username, head_user))
+  while (current != nullptr) // Iterasi melalui linked list untuk mengisi deque dengan riwayat login.
   {
-    cout << "Masukkan password: ";
-    newuser->password = str_nokosong("Masukkan password : ");
-    fflush(stdin);
-    cout << "Masukkan nomor hp: ";
-    getline(cin, newuser->nomor_hp);
-    newuser->next = nullptr;
-    newuser->prev = nullptr;
-    return newuser;
+    if (current->username != "admin") // Memeriksa apakah username bukan "admin". jika admin maka tidak akan ditampilkan
+    {
+      recentLogins.push_back(*current); // Tambahkan riwayat login ke deque
+
+      // Hanya tampilkan 10 riwayat login terbaru
+      if (recentLogins.size() > 10) // Hanya menyimpan 10 riwayat login terbaru dalam deque. Jika deque melebihi 10 elemen, hapus elemen terdepan.
+      {
+        recentLogins.pop_front();
+      }
+    }
+
+    current = current->next; // Pindah ke node berikutnya dalam linked list.
   }
-  else
+
+  // Tampilkan riwayat login terbaru dalam urutan terbalik
+  cout << "Riwayat Login Pengunjung (10 terbaru):" << endl;
+
+  // Iterasi melalui deque dalam urutan terbalik dan mencetak informasi riwayat login.
+  for (auto login : recentLogins) // Auto Login Mendeklarasikan variabel login yang bertindak sebagai referensi atau salinan dari setiap elemen dalam recentLogins.
+                                  // : recentLogins: Menunjukkan bahwa iterasi akan dilakukan pada semua elemen dalam recentLogins.
   {
-    cout << "Username sudah digunakan" << endl;
-    delete newuser; // Hapus pointer jika username sudah digunakan
-    return nullptr;
+    if (count > 10) // Hanya tampilkan 10 riwayat login terbaru
+      break;
+
+    if (login.username != "admin") // Skip riwayat login untuk admin
+    {
+      cout << "Pengunjung " << count << endl;
+      cout << "Username : " << login.username << endl;
+      cout << "Waktu Login : " << login.timestamp << endl;
+      cout << "______________________" << endl;
+      count++;
+    }
   }
 }
 
 // Fungsi Untuk Registrasi(User)
 void tambahUser(user *&head_user, user *&tail_user)
 {
-  user *newuser = Newuser(head_user);
-  if (newuser)
-  { // Periksa jika pointer user tidak nullptr
-    if (isempty(head_user, tail_user))
+  user *newuser = Newuser(head_user); // Memanggil fungsi Newuser untuk membuat user baru.
+  if (newuser)                        // Memeriksa apakah pointer newuser tidak nullptr. Jika nullptr, berarti pembuatan user baru tidak berhasil dan tidak perlu melanjutkan proses registrasi.
+  {
+    if (isempty(head_user, tail_user)) // Memeriksa apakah linked list user kosong.
     {
       head_user = newuser;
       tail_user = newuser;
+      // Jika kosong (true), head_user dan tail_user diatur ke newuser, karena ini adalah user pertama dalam linked list.
     }
     else
-    {
+    { // Jika tidak kosong (false),
       tail_user->next = newuser;
       newuser->prev = tail_user;
       tail_user = newuser;
-      cout << "Registrasi Berhasil" <<endl;
-      cout << "Silahkan Login Untuk Memesan" <<endl;
+      // tail_user->next = newuser; newuser->prev = tail_user; tail_user = newuser;: Menambahkan newuser ke belakang linked list.
+      // Pointer next pada node sebelumnya (tail_user) diatur untuk menunjuk ke newuser, dan pointer prev pada newuser diatur untuk menunjuk ke tail_user. Kemudian, tail_user diupdate menjadi newuser.
+      cout << "Registrasi Berhasil" << endl;
+      cout << "Silahkan Login Untuk Memesan" << endl; // Setelah menambahkan user ke linked list, mencetak pesan registrasi berhasil dan mengundang pengguna untuk login.
     }
   }
 }
 
+//  Fungsi untuk membuat user baru
+user *Newuser(user *head_user) // Membuat node baru untuk user menggunakan operator new.
+{
+  user *newuser = new user; // Meminta input untuk username dengan memanggil fungsi str_nokosong yang membaca string dari pengguna dan
+  cout << "Masukkan username: ";
+  newuser->username = str_nokosong("Masukkan username : ");
+  fflush(stdin);                               // memastikan bahwa string tersebut tidak mengandung spasi di awal atau di akhir. fflush(stdin); digunakan untuk membersihkan buffer input.
+  if (!cariUser(newuser->username, head_user)) // penjelasan ada di bawah
+  {
+    cout << "Masukkan password: ";
+    newuser->password = str_nokosong("Masukkan password : "); // Jika username belum digunakan, meminta input untuk password menggunakan fungsi str_nokosong untuk
+    fflush(stdin);                                            // memastikan bahwa password tidak mengandung spasi di awal atau di akhir. fflush(stdin); digunakan untuk membersihkan buffer input.
+    cout << "Masukkan nomor hp: ";
+    getline(cin, newuser->nomor_hp);
+    newuser->next = nullptr;
+    newuser->prev = nullptr; // Menginisialisasi pointer next dan prev pada node baru.
+    return newuser;          // Mengembalikan pointer ke user baru.
+  }
+  else
+  {
+    cout << "Username sudah digunakan" << endl; // Jika username sudah digunakan, cetak pesan kesalahan.
+    delete newuser;                             // Menghapus pointer jika username sudah digunakan agar tidak ada kebocoran memori.
+    return nullptr;                             //: Mengembalikan nullptr karena pembuatan user baru tidak berhasil karena username sudah digunakan.
+  }
+}
+
+// Fungsi untuk mencari apakah username sudah digunakan
+user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter
+{
+  user *current = head_user;
+  while (current != nullptr) // loop while yang berjalan selama current tidak null
+  {
+    if (current->username == username) // jika bernilai true maka fungsi berakhir sampai sini.
+    {                                  // artinya ada username yang sama maka loop tidak dilanjutkan
+      return current;
+    }
+    current = current->next; // dan jika bernilai false maka akan melanjutkan pencarian
+  }
+  return nullptr; // Jika selesai melalui seluruh linked list dan tidak menemukan node dengan username yang sesuai,
+} // mengembalikan nullptr untuk menandakan bahwa pengguna tidak ditemukan.
+
+// Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
+user *isUserValid(user *head_user, string username, string password, string now)
+{
+  user *foundUser = cariUser(username, head_user); // Memanggil fungsi cariUser untuk mencari user berdasarkan username dalam linked list user (head_user)
+                                                   // Hasilnya disimpan dalam pointer foundUser.
+  if (foundUser != nullptr && foundUser->password == password) // Memeriksa apakah user ditemukan (pointer foundUser bukan nullptr) dan
+  {                                                            // apakah password yang dimasukkan sesuai dengan password user yang ditemukan.
+    simpanLoginKeCSV(username, now);                           // Jika user ditemukan dan password sesuai, memanggil fungsi simpanLoginKeCSV untuk
+    return foundUser;                                          // menambahkan informasi login ke dalam file riwayat login CSV.
+  }                                                            // Mengembalikan pointer ke user yang valid.
+
+  return nullptr; // Ini menandakan bahwa login tidak berhasil.
+}
 
 // Fungsi untuk memeriksa apakah nomor lapangan sudah ada atau belum
 bool isNomorLapangan(lapangan *head, lapangan *tail, int no_lapangan)
@@ -509,7 +803,6 @@ void tambahDiantara(lapangan **head, lapangan **tail, int idx)
   }
 }
 
-
 // Fungsi Edit Data Lapangan (Admin)
 void update(lapangan *head, int posisi)
 {
@@ -520,7 +813,7 @@ void update(lapangan *head, int posisi)
   }
 
   lapangan *current = head;
-  int count = 1;// update berdasarkan pengurutan data
+  int count = 1; // update berdasarkan pengurutan data
   while (current && count < posisi)
   {
     current = current->next;
@@ -543,10 +836,10 @@ void update(lapangan *head, int posisi)
     // cin.ignore();
     // getline(cin, current->jenis_lapangan);
     current->jenis_lapangan = str_nokosong("Masukkan Jenis Lapangan  : ");
-    //cout << "Masukkan Fasilitas Lapangan: ";
+    // cout << "Masukkan Fasilitas Lapangan: ";
     current->fasilitas_lapangan = str_nokosong("Masukkan Fasilitas Lapangan : ");
     fflush(stdin);
-    //getline(cin, current->fasilitas_lapangan);
+    // getline(cin, current->fasilitas_lapangan);
     current->harga = hargaint();
     fflush(stdin);
     cout << "Data Berhasil Di Update" << endl;
@@ -687,56 +980,6 @@ void displayTail(lapangan *head, lapangan *tail)
       cout << "=====================================================================================" << endl;
       temp = temp->prev;
     }
-  }
-}
-
-
-
-
-
-
-
-void viewLoginHistory(LoginInfo *head)
-{
-  LoginInfo *current = head;
-  int count = 1;
-
-  if (current == nullptr)
-  {
-    cout << "Tidak ada riwayat login." << endl;
-    return;
-  }
-
-  // Buat deque (double-ended queue) untuk menyimpan riwayat login terbaru
-  deque<LoginInfo> recentLogins;
-
-  while (current != nullptr)
-  {
-    if (current->username != "admin")
-    {
-      // Tambahkan riwayat login ke deque
-      recentLogins.push_back(*current);
-
-      // Hanya tampilkan 10 riwayat login terbaru
-      if (recentLogins.size() > 10)
-      {
-        recentLogins.pop_front();
-      }
-    }
-
-    current = current->next;
-  }
-
-  // Tampilkan riwayat login terbaru dalam urutan terbalik
-  cout << "Riwayat Login Pengunjung (10 terbaru):" << endl;
-
-  for (auto it = recentLogins.rbegin(); it != recentLogins.rend(); ++it)
-  {
-    cout << "Pengunjung " << count << endl;
-    cout << "Username : " << it->username << endl;
-    cout << "Waktu Login : " << it->timestamp << endl;
-    cout << "______________________" << endl;
-    count++;
   }
 }
 
@@ -982,143 +1225,6 @@ void search_booyer1(lapangan *head, string pat)
   }
 }
 
-// ========================================= menulis dan baca csv
-// ================================================= penulisan dan pembacaan ke
-// csv Fungsi untuk menulis data pengguna ke dalam file CSV
-void writeUserToCSV(user *newUser)
-{
-  ofstream file("B1_Kelompok4/users.csv"); // Membuka berkas untuk penulisan (ios::app untuk
-                             // menambahkan data ke berkas yang ada)
-  user *curr = newUser;
-  if (file.is_open())
-  {
-    while (curr != nullptr)
-    {
-      file << curr->username << "," << curr->password << "," << curr->nomor_hp << endl;
-      curr = curr->next;
-    }
-  }
-  else
-  {
-    cout << "Gagal membuka berkas CSV" << endl;
-  }
-}
-
-// Fungsi untuk membaca data pengguna dari file CSV
-void readUsersFromCSV(user *&head_user, user *&tail_user)
-{
-  ifstream file("B1_Kelompok4/users.csv");// ini sebelumnya user.csv
-  if (file.is_open())
-  {
-    string line;
-    while (getline(file, line))
-    {
-      stringstream ss(line);
-      string username, password, nomor_hp;
-      if (getline(ss, username, ',') && getline(ss, password, ',') &&
-          getline(ss, nomor_hp, ','))
-      {
-        user *newUser = new user;
-        newUser->username = username;
-        newUser->password = password;
-        newUser->nomor_hp = nomor_hp;
-        newUser->next = nullptr;
-        newUser->prev = nullptr;
-
-        if (isempty(head_user, tail_user))
-        {
-          head_user = newUser;
-          tail_user = newUser;
-        }
-        else
-        {
-          tail_user->next = newUser;
-          newUser->prev = tail_user;
-          tail_user = newUser;
-        }
-      }
-    }
-    file.close();
-  }
-  else
-  {
-    cout << "Gagal membuka berkas CSV" << endl;
-  }
-}
-
-// Fungsi Untuk Menyimpan Struct Lapanngan ke dalam CSV file
-void simpanKeCSV(lapangan *head)
-{
-  ofstream file("B1_Kelompok4/data_lapangan.csv");
-  if (!file.is_open())
-  {
-    cout << "Gagal membuka file data_lapangan.csv" << endl;
-    return;
-  }
-  lapangan *current = head;
-  while (current)
-  {
-    file << current->no_lapangan << ",";
-    file << current->jenis_lapangan << ",";
-    file << current->fasilitas_lapangan << ",";
-    file << current->harga << "\n";
-    current = current->next;
-  }
-  file.close();
-  cout << "Data telah disimpan ke dalam file data_lapangan.csv" << endl;
-}
-
-// Fungsi Untuk Membaca CSV File Untuk Data Lapangan
-void bacaDariCSV(lapangan *&head, lapangan *&tail)
-{
-  ifstream file("B1_Kelompok4/data_lapangan.csv");
-  if (!file.is_open())
-  {
-    cout << "File data_lapangan.csv tidak ditemukan." << endl;
-    return;
-  }
-
-  string line;
-  while (getline(file, line))
-  {
-    stringstream ss(line);
-    string no_lapanganStr, jenis_lapangan, fasilitas_lapangan, hargaStr;
-    if (!getline(ss, no_lapanganStr, ',') ||
-        !getline(ss, jenis_lapangan, ',') ||
-        !getline(ss, fasilitas_lapangan, ',') || !getline(ss, hargaStr, ','))
-    {
-      cerr << "Error reading line from CSV." << endl;
-      break;
-    }
-
-    int harga = stoi(hargaStr);
-    int no_lapangan = stoi(no_lapanganStr);
-    lapangan *lpng = new lapangan;
-    lpng->no_lapangan = no_lapangan;
-    lpng->jenis_lapangan = jenis_lapangan;
-    lpng->fasilitas_lapangan = fasilitas_lapangan;
-    lpng->harga = harga;
-    lpng->next = nullptr;
-    lpng->prev = tail;
-
-    if (head == nullptr)
-    {
-      head = lpng;
-      lpng->prev = nullptr;
-      tail = lpng;
-    }
-    else
-    {
-      tail->next = lpng;
-      tail = lpng;
-    }
-  }
-
-  file.close();
-  cout << "Data telah dibaca dari file data_lapangan.csv" << endl;
-}
-
-
 // Fungsi Agar Memperbaiki data setelah disorting agar saat masuk ke menu display maka terururt sesuai yang diinginkn
 void fixPrevious(lapangan **head, lapangan **tail)
 {
@@ -1133,11 +1239,11 @@ void fixPrevious(lapangan **head, lapangan **tail)
   *tail = prev;
 }
 
+// 1. hari, 2. muncul list lapangan(yg tersedia), 3. pilih nomor lapangannya(baru di rubah harinya)
+// lalu masuk ke pesanan
 
-//1. hari, 2. muncul list lapangan(yg tersedia), 3. pilih nomor lapangannya(baru di rubah harinya)
-//lalu masuk ke pesanan
-
-bool display_daylap(lapangan *head, lapangan *tail, int no){
+bool display_daylap(lapangan *head, lapangan *tail, int no)
+{
   if (isempty(head, tail))
   {
     cout << "Lapangan Masih Kosong !!" << endl;
@@ -1148,69 +1254,73 @@ bool display_daylap(lapangan *head, lapangan *tail, int no){
     lapangan *temp = head;
     while (temp != nullptr)
     {
-        if (temp->hari[no] != " ")
-        {
-            
-            cout << "====================================================" << endl;
-            cout << "|| No Lapangan        : " << temp->no_lapangan << endl;
-            cout << "|| Jenis Lapangan     : " << temp->jenis_lapangan << endl;
-            cout << "|| Fasilitas_Lapangan : " << temp->fasilitas_lapangan << endl;
-            cout << "|| Harga Perhari      : " << temp->harga << endl;
-            cout << "====================================================" << endl;
-            ver = false;
-        }
-        temp = temp->next;
+      if (temp->hari[no] != " ")
+      {
+
+        cout << "====================================================" << endl;
+        cout << "|| No Lapangan        : " << temp->no_lapangan << endl;
+        cout << "|| Jenis Lapangan     : " << temp->jenis_lapangan << endl;
+        cout << "|| Fasilitas_Lapangan : " << temp->fasilitas_lapangan << endl;
+        cout << "|| Harga Perhari      : " << temp->harga << endl;
+        cout << "====================================================" << endl;
+        ver = false;
+      }
+      temp = temp->next;
     }
     if (ver)
     {
-      
-      cout <<"Lapangan sudah Tidak tersedia"<< endl;
+
+      cout << "Lapangan sudah Tidak tersedia" << endl;
       return false;
     }
     return true;
   }
 }
 
-bool pesan(lapangan *head, int no, int hari){
-    if (!head)
+bool pesan(lapangan *head, int no, int hari)
+{
+  if (!head)
+  {
+    cout << "Linked List kosong." << endl;
+    return false;
+  }
+  lapangan *current = head;
+  while (current->no_lapangan != no)
+  {
+    if (current->next == nullptr)
     {
-        cout << "Linked List kosong." << endl;
-        return false;
+
+      break;
     }
-    lapangan *current = head;
-    while (current->no_lapangan != no)
+    else
     {
-      if (current->next == nullptr)
-      {
-        
-        break;
-      } else
-      {
-        
-        current = current->next;
-      }
+
+      current = current->next;
     }
-    if (current->no_lapangan == no && current->hari[hari] != " ")
-    {
-        
-      return true;
-    } else
-    {
-        cout << "gada lapangannya---" << endl;
-        return false;
-    }
+  }
+  if (current->no_lapangan == no && current->hari[hari] != " ")
+  {
+
+    return true;
+  }
+  else
+  {
+    cout << "gada lapangannya---" << endl;
+    return false;
+  }
 }
 
-pesanan *newpesanan(user *user, lapangan *head, int no_lap, int hari){
+pesanan *newpesanan(user *user, lapangan *head, int no_lap, int hari)
+{
   pesanan *pesanabaru = new pesanan;
   lapangan *head_lapangan = head;
   while (true)
   {
-    
+
     if (head_lapangan->no_lapangan == no_lap)
     {
-      
-      //head_lapangan = head_lapangan->next;
+
+      // head_lapangan = head_lapangan->next;
       pesanabaru->username = user->username;
       pesanabaru->nomor_hp = user->nomor_hp;
       pesanabaru->no_lapangan = no_lap;
@@ -1222,7 +1332,6 @@ pesanan *newpesanan(user *user, lapangan *head, int no_lap, int hari){
     }
     head_lapangan = head_lapangan->next;
   }
-  
 }
 
 void addpesanan(pesanan *&head, pesanan *&tail, user *user, lapangan *head_lapangan, int no_lap, int hari)
@@ -1241,122 +1350,31 @@ void addpesanan(pesanan *&head, pesanan *&tail, user *user, lapangan *head_lapan
   }
 }
 
-//lihat semua pesanan
-void display_pesanan(pesanan *head, pesanan *tail){
-  {
-  if (isempty(head, tail))
-  {
-    cout << "Pesanan Masih Kosong !!" << endl;
-  }
-  else
-  {
-    pesanan *temp = head;
-    while (temp != nullptr)
-    {
-      cout << "====================================================" << endl;
-      cout << "|| No Lapangan      : " << temp->no_lapangan << endl;
-      cout << "|| Hari             : " << temp->hari << endl;
-      cout << "|| Nama Penyewa     : " << temp->username << endl;
-      cout << "|| Nomor HP Penyewa : " << temp->nomor_hp << endl;
-      cout << "====================================================" << endl;
-      temp = temp->next;
-    }
-  }
-}
-}
-
-//baca csv pesanan
-void bacaPesananDariCSV(pesanan *&head, pesanan *&tail, lapangan *head_lapangan)
+// lihat semua pesanan
+void display_pesanan(pesanan *head, pesanan *tail)
 {
-  ifstream file("B1_Kelompok4/data_pesanan.csv");
-  if (!file.is_open())
   {
-    cout << "File data_pesanan.csv tidak ditemukan." << endl;
-    return;
-  }
-
-  string line;
-  while (getline(file, line))
-  {
-    stringstream ss(line);
-    string username, nomor_hp, no_lapangan, hari;
-
-    if (!getline(ss, username, ',') ||
-        !getline(ss, nomor_hp, ',') ||
-        !getline(ss, no_lapangan, ',')||
-        !getline(ss, hari, ','))
+    if (isempty(head, tail))
     {
-      cerr << "Error reading line from CSV." << endl;
-      break;
-    }
-    int no_lap = stoi(no_lapangan);
-    lapangan* temp_lapangan = head_lapangan;
-    while (temp_lapangan != nullptr) {
-        if (temp_lapangan->no_lapangan == no_lap) {
-            break;
-        }
-        temp_lapangan = temp_lapangan->next;
-    }
-    
-    pesanan *pesan = new pesanan;
-    pesan->username = username;
-    pesan->nomor_hp = nomor_hp;
-    pesan->no_lapangan = no_lap;
-    pesan->hari = hari;
-    for (int i = 0; i < 7; i++)
-    {
-      
-      //cout << "hall"<< i << endl;
-      if (hari == temp_lapangan->hari[i])
-      {
-        
-        temp_lapangan->hari[i] = " ";
-      }
-    }
-    
-    pesan->next = nullptr;
-    pesan->prev = tail;
-
-    if (head == nullptr)
-    {
-      head = pesan;
-      pesan->prev = nullptr;
-      tail = pesan;
+      cout << "Pesanan Masih Kosong !!" << endl;
     }
     else
     {
-      tail->next = pesan;
-      tail = pesan;
+      pesanan *temp = head;
+      while (temp != nullptr)
+      {
+        cout << "====================================================" << endl;
+        cout << "|| No Lapangan      : " << temp->no_lapangan << endl;
+        cout << "|| Hari             : " << temp->hari << endl;
+        cout << "|| Nama Penyewa     : " << temp->username << endl;
+        cout << "|| Nomor HP Penyewa : " << temp->nomor_hp << endl;
+        cout << "====================================================" << endl;
+        temp = temp->next;
+      }
     }
   }
-
-  file.close();
-  cout << "Data pesanan telah dibaca dari file data_pesanan.csv" << endl;
 }
 
-
-void simpanPesananKeCSV(pesanan *head, pesanan *tail)
-{
-  ofstream file("B1_Kelompok4/data_pesanan.csv");
-  if (!file.is_open())
-  {
-    cerr << "Gagal membuka file data_pesanan.csv" << endl;
-    return;
-  }
-
-  pesanan *current = head;
-  while (current)
-  {
-    file << current->username << ",";
-    file << current->nomor_hp << ",";
-    file << current->no_lapangan << ",";
-    file << current->hari << "\n";
-    current = current->next;
-  }
-
-  file.close();
-  cout << "Data pesanan telah disimpan ke dalam file data_pesanan.csv" << endl;
-}
 
 
 // =============== hapus pesanan ============= // admin
@@ -1400,100 +1418,111 @@ void simpanPesananKeCSV(pesanan *head, pesanan *tail)
 //     }
 //     while (lap->no_lapangan != current->no_lapangan)
 //     {
-//       
+//
 //       lap = lap->next;
 //     }
 //     for (int i = 0; i < 7; i++)
 //     {
-//       
+//
 //       if (lap->hari[i] == " ")
 //       {
-//         
+//
 //         lap->hari[i] = current->hari;
 //       }
 //     }
 
-bool dishappe(pesanan* head, pesanan* tail) {
-    if (isempty(head, tail)) {
-        cout << "Lapangan Masih Kosong !!" << endl;
-        return false;
-    } else {
-        pesanan* temp = head;
-        int idx = 1;
-        while (temp != nullptr) {
-            cout << "====================================================" << endl;
-            cout << "|| No Pesanan       : " << idx << endl;
-            cout << "|| No Lapangan      : " << temp->no_lapangan << endl;
-            cout << "|| Hari             : " << temp->hari << endl;
-            cout << "|| Nama Penyewa     : " << temp->username << endl;
-            cout << "|| Nomor HP Penyewa : " << temp->nomor_hp << endl;
-            cout << "====================================================" << endl;
-            idx += 1;
-            temp = temp->next;
-        }
-        return true;
+bool dishappe(pesanan *head, pesanan *tail)
+{
+  if (isempty(head, tail))
+  {
+    cout << "Lapangan Masih Kosong !!" << endl;
+    return false;
+  }
+  else
+  {
+    pesanan *temp = head;
+    int idx = 1;
+    while (temp != nullptr)
+    {
+      cout << "====================================================" << endl;
+      cout << "|| No Pesanan       : " << idx << endl;
+      cout << "|| No Lapangan      : " << temp->no_lapangan << endl;
+      cout << "|| Hari             : " << temp->hari << endl;
+      cout << "|| Nama Penyewa     : " << temp->username << endl;
+      cout << "|| Nomor HP Penyewa : " << temp->nomor_hp << endl;
+      cout << "====================================================" << endl;
+      idx += 1;
+      temp = temp->next;
     }
-}
-
-// Fungsi untuk menghapus pesanan
-void deletePesanan(pesanan*& head_pesanan, pesanan*& tail_pesanan, lapangan*& head_lapangan) {
-    // Menampilkan daftar pesanan
-    bool var;
-    var = dishappe(head_pesanan, tail_pesanan);
-    pesanan* current = head_pesanan;
-    if(var){
-      int no_pesanan;
-      cout << "Masukkan nomor pesanan yang ingin dihapus: ";
-      cin >> no_pesanan ;
-      fflush(stdin);
-
-      // Menemukan pesanan berdasarkan nomor pesanan yang dimasukkan
-      for (int i = 1; i < no_pesanan && current != nullptr; i++) {
-          current = current->next;
-      }
-
-    } 
-      // Jika pesanan ditemukan, lakukan penghapusan
-      if (current != nullptr) {
-          lapangan* lap = head_lapangan;
-          while (lap->no_lapangan != current->no_lapangan)
-          {
-            lap = lap->next;
-          }
-          for (int i = 0; i < 7; i++)
-          {
-            if (lap->hari[i] == " ")
-            {
-              lap->hari[i] = current->hari;
-            }
-          }
-
-          if (current->prev != nullptr) {
-              current->prev->next = current->next;
-          }
-          if (current->next != nullptr) {
-              current->next->prev = current->prev;
-          }
-          if (current == head_pesanan) {
-              head_pesanan = current->next;
-          }
-          if (current == tail_pesanan) {
-              tail_pesanan = current->prev;
-          }
-
-          delete current;
-          cout << "Pesanan berhasil dihapus." << endl;
-
-    }
-    else {
-        cout << "Nomor pesanan tidak ditemukan atau tidak valid." <<endl;
+    return true;
   }
 }
 
+// Fungsi untuk menghapus pesanan
+void deletePesanan(pesanan *&head_pesanan, pesanan *&tail_pesanan, lapangan *&head_lapangan)
+{
+  // Menampilkan daftar pesanan
+  bool var;
+  var = dishappe(head_pesanan, tail_pesanan);
+  pesanan *current = head_pesanan;
+  if (var)
+  {
+    int no_pesanan;
+    cout << "Masukkan nomor pesanan yang ingin dihapus: ";
+    cin >> no_pesanan;
+    fflush(stdin);
 
+    // Menemukan pesanan berdasarkan nomor pesanan yang dimasukkan
+    for (int i = 1; i < no_pesanan && current != nullptr; i++)
+    {
+      current = current->next;
+    }
+  }
+  // Jika pesanan ditemukan, lakukan penghapusan
+  if (current != nullptr)
+  {
+    lapangan *lap = head_lapangan;
+    while (lap->no_lapangan != current->no_lapangan)
+    {
+      lap = lap->next;
+    }
+    for (int i = 0; i < 7; i++)
+    {
+      if (lap->hari[i] == " ")
+      {
+        lap->hari[i] = current->hari;
+      }
+    }
 
-//display khusus user
-void dispesus(pesanan *head, pesanan *tail, user *user){
+    if (current->prev != nullptr)
+    {
+      current->prev->next = current->next;
+    }
+    if (current->next != nullptr)
+    {
+      current->next->prev = current->prev;
+    }
+    if (current == head_pesanan)
+    {
+      head_pesanan = current->next;
+    }
+    if (current == tail_pesanan)
+    {
+      tail_pesanan = current->prev;
+    }
+
+    delete current;
+    cout << "Pesanan berhasil dihapus." << endl;
+  }
+  else
+  {
+    cout << "Nomor pesanan tidak ditemukan atau tidak valid." << endl;
+  }
+}
+
+// display khusus user
+void dispesus(pesanan *head, pesanan *tail, user *user)
+{
   bool ver = true;
   if (isempty(head, tail))
   {
@@ -1506,7 +1535,7 @@ void dispesus(pesanan *head, pesanan *tail, user *user){
     {
       if (user->username == temp->username)
       {
-        
+
         cout << "====================================================" << endl;
         cout << "|| No Lapangan      : " << temp->no_lapangan << endl;
         cout << "|| Hari             : " << temp->hari << endl;
@@ -1520,40 +1549,28 @@ void dispesus(pesanan *head, pesanan *tail, user *user){
   }
   if (ver)
   {
-    
+
     cout << "Pesanan Masih Kosong !!" << endl;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 int main()
 {
 
   // Variabel yang digunakan
   time_t now;
-  time(&now);
+  // time(&now);
   user *head_user = nullptr;
   user *tail_user = nullptr; //
   lapangan *head_lapangan = nullptr;
   lapangan *tail_lapangan = nullptr;
   LoginInfo *head = nullptr;
   LoginInfo *tail = nullptr;
-  pesanan* head_pesanan = nullptr;
-  pesanan* tail_pesanan = nullptr;
-  readUsersFromCSV(head_user, tail_user);
-  bacaDariCSV(head_lapangan, tail_lapangan);
-  bacaLoginHistoryFromCSV(head, tail);
+  pesanan *head_pesanan = nullptr;
+  pesanan *tail_pesanan = nullptr;
+  bacaUsersFromCSV(head_user, tail_user);
+  bacaLapKeCSV(head_lapangan, tail_lapangan);
+  bacaLoginDariCSV(head, tail);
   bacaPesananDariCSV(head_pesanan, tail_pesanan, head_lapangan);
   bool isAdminLoggedIn = false; // Menandai apakah admin telah login
   user *loginuser = nullptr;    // Menyimpan username pengguna yang sedang login
@@ -1763,7 +1780,7 @@ int main()
           string search;
           shellSort2(&head_lapangan, length(head_lapangan));
           cout << "Fasilitas Yang Dicari :";
-          cin >> search; 
+          cin >> search;
           fflush(stdin);
           cout << "____________" << endl;
           search_booyer(head_lapangan, search);
@@ -1852,7 +1869,7 @@ int main()
     }
     else if (pilihan == 7 && isAdminLoggedIn)
     {
-      viewLoginHistory(head);
+      displayHistoryLogin(head);
     }
     else if (pilihan == 8 && isAdminLoggedIn)
     {
@@ -1865,73 +1882,71 @@ int main()
       pilihan = paksaint();
       if (pilihan == 1)
       {
-        
-        cout << "Lihat semua pesanan" << endl;
-        display_pesanan(head_pesanan,tail_pesanan);
-      } else if (pilihan == 2)
-      {
-        
-        deletePesanan(head_pesanan,tail_pesanan,head_lapangan);
-        simpanPesananKeCSV(head_pesanan,tail_pesanan);
-      }
-      
-      
 
+        cout << "Lihat semua pesanan" << endl;
+        display_pesanan(head_pesanan, tail_pesanan);
+      }
+      else if (pilihan == 2)
+      {
+
+        deletePesanan(head_pesanan, tail_pesanan, head_lapangan);
+        simpanPesananKeCSV(head_pesanan, tail_pesanan);
+      }
     }
-else if (pilihan == 1 && loginuser != nullptr && isAdminLoggedIn == false)
-{
-        int hari;
-        int nomor_lap;
-        bool ver = false;
-        cout << "====================================" << endl;
-        cout << "||  Booking Lapangan              ||" << endl;
-        cout << "===================================" << endl;
-        cout << "|| 1. Senin                       ||" << endl;
-        cout << "|| 2. Selasa                      ||" << endl;
-        cout << "|| 3. Rabu                        ||" << endl;
-        cout << "|| 4. Kamis                       ||" << endl;
-        cout << "|| 5. Jumat                       ||" << endl;
-        cout << "|| 6. Sabtu                       ||" << endl;
-        cout << "|| 7. Minggu                      ||" << endl;
-        cout << "====================================" << endl;
-        hari = paksaint();
+    else if (pilihan == 1 && loginuser != nullptr && isAdminLoggedIn == false)
+    {
+      int hari;
+      int nomor_lap;
+      bool ver = false;
+      cout << "====================================" << endl;
+      cout << "||  Booking Lapangan              ||" << endl;
+      cout << "===================================" << endl;
+      cout << "|| 1. Senin                       ||" << endl;
+      cout << "|| 2. Selasa                      ||" << endl;
+      cout << "|| 3. Rabu                        ||" << endl;
+      cout << "|| 4. Kamis                       ||" << endl;
+      cout << "|| 5. Jumat                       ||" << endl;
+      cout << "|| 6. Sabtu                       ||" << endl;
+      cout << "|| 7. Minggu                      ||" << endl;
+      cout << "====================================" << endl;
+      hari = paksaint();
+      fflush(stdin);
+      hari -= 1;
+      ver = display_daylap(head_lapangan, tail_lapangan, hari);
+      if (ver == true)
+      {
+
+        nomor_lap = noLap();
         fflush(stdin);
-        hari -= 1;
-        ver = display_daylap(head_lapangan,tail_lapangan,hari);
+        ver = pesan(head_lapangan, nomor_lap, hari);
         if (ver == true)
         {
-          
-          nomor_lap = noLap();
-          fflush(stdin);
-          ver = pesan(head_lapangan,nomor_lap,hari);
-          if (ver == true)
-          {
-            /* disini masukkan ke struck pesanan */
-            addpesanan(head_pesanan,tail_pesanan,loginuser, head_lapangan,nomor_lap, hari);
-            simpanPesananKeCSV(head_pesanan,tail_pesanan);
-          }
+          /* disini masukkan ke struck pesanan */
+          addpesanan(head_pesanan, tail_pesanan, loginuser, head_lapangan, nomor_lap, hari);
+          simpanPesananKeCSV(head_pesanan, tail_pesanan);
         }
-}
+      }
+    }
 
     else if (pilihan == 2 && loginuser != nullptr && isAdminLoggedIn == false)
     {
-        
-        int hari;
-        bool var;
-        cout << "====================================" << endl;
-        cout << "||  Booking Lapangan              ||" << endl;
-        cout << "====================================" << endl;
-        cout << "|| 1. Senin                       ||" << endl;
-        cout << "|| 2. Selasa                      ||" << endl;
-        cout << "|| 3. Rabu                        ||" << endl;
-        cout << "|| 4. Kamis                       ||" << endl;
-        cout << "|| 5. Jumat                       ||" << endl;
-        cout << "|| 6. Sabtu                       ||" << endl;
-        cout << "|| 7. Minggu                      ||" << endl;
-        cout << "====================================" << endl;
-        hari = paksaint();
-        hari -= 1;
-        var = display_daylap(head_lapangan,tail_lapangan,hari);
+
+      int hari;
+      bool var;
+      cout << "====================================" << endl;
+      cout << "||  Booking Lapangan              ||" << endl;
+      cout << "====================================" << endl;
+      cout << "|| 1. Senin                       ||" << endl;
+      cout << "|| 2. Selasa                      ||" << endl;
+      cout << "|| 3. Rabu                        ||" << endl;
+      cout << "|| 4. Kamis                       ||" << endl;
+      cout << "|| 5. Jumat                       ||" << endl;
+      cout << "|| 6. Sabtu                       ||" << endl;
+      cout << "|| 7. Minggu                      ||" << endl;
+      cout << "====================================" << endl;
+      hari = paksaint();
+      hari -= 1;
+      var = display_daylap(head_lapangan, tail_lapangan, hari);
     }
     else if (pilihan == 3 && loginuser != nullptr)
     {
@@ -1973,9 +1988,10 @@ else if (pilihan == 1 && loginuser != nullptr && isAdminLoggedIn == false)
         }
       }
     }
-    else if(pilihan == 4 && loginuser != nullptr && isAdminLoggedIn == false){
-        // display pesanan yang telah user itu sendiri
-      dispesus(head_pesanan,tail_pesanan,loginuser);
+    else if (pilihan == 4 && loginuser != nullptr && isAdminLoggedIn == false)
+    {
+      // display pesanan yang telah user itu sendiri
+      dispesus(head_pesanan, tail_pesanan, loginuser);
     }
     else if (pilihan == 2 && loginuser == nullptr)
     {
@@ -2020,8 +2036,8 @@ else if (pilihan == 1 && loginuser != nullptr && isAdminLoggedIn == false)
     else if (pilihan == 0 && loginuser == nullptr)
     {
       cout << "Keluar" << endl;
-      writeUserToCSV(head_user);
-      simpanKeCSV(head_lapangan);
+      simpanUsersToCSV(head_user);
+      simpanLapKeCSV(head_lapangan);
       break;
     }
     else
