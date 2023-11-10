@@ -604,30 +604,22 @@ void displayHistoryLogin(LoginInfo *head)
   }
 }
 
-// Fungsi Untuk Registrasi(User)
-void tambahUser(user *&head_user, user *&tail_user)
+
+// Fungsi untuk mencari apakah username sudah digunakan
+user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter
 {
-  user *newuser = Newuser(head_user); // Memanggil fungsi Newuser untuk membuat user baru.
-  if (newuser)                        // Memeriksa apakah pointer newuser tidak nullptr. Jika nullptr, berarti pembuatan user baru tidak berhasil dan tidak perlu melanjutkan proses registrasi.
+  user *current = head_user;
+  while (current != nullptr) // loop while yang berjalan selama current tidak null
   {
-    if (isempty(head_user, tail_user)) // Memeriksa apakah linked list user kosong.
-    {
-      head_user = newuser;
-      tail_user = newuser;
-      // Jika kosong (true), head_user dan tail_user diatur ke newuser, karena ini adalah user pertama dalam linked list.
+    if (current->username == username) // jika bernilai true maka fungsi berakhir sampai sini.
+    {                                  // artinya ada username yang sama maka loop tidak dilanjutkan
+      return current;
     }
-    else
-    { // Jika tidak kosong (false),
-      tail_user->next = newuser;
-      newuser->prev = tail_user;
-      tail_user = newuser;
-      // tail_user->next = newuser; newuser->prev = tail_user; tail_user = newuser;: Menambahkan newuser ke belakang linked list.
-      // Pointer next pada node sebelumnya (tail_user) diatur untuk menunjuk ke newuser, dan pointer prev pada newuser diatur untuk menunjuk ke tail_user. Kemudian, tail_user diupdate menjadi newuser.
-      cout << "Registrasi Berhasil" << endl;
-      cout << "Silahkan Login Untuk Memesan" << endl; // Setelah menambahkan user ke linked list, mencetak pesan registrasi berhasil dan mengundang pengguna untuk login.
-    }
+    current = current->next; // dan jika bernilai false maka akan melanjutkan pencarian
   }
-}
+  return nullptr; // Jika selesai melalui seluruh linked list dan tidak menemukan node dengan username yang sesuai,
+} // mengembalikan nullptr untuk menandakan bahwa pengguna tidak ditemukan.
+
 
 //  Fungsi untuk membuat user baru
 user *Newuser(user *head_user) // Membuat node baru untuk user menggunakan operator new.
@@ -655,20 +647,33 @@ user *Newuser(user *head_user) // Membuat node baru untuk user menggunakan opera
   }
 }
 
-// Fungsi untuk mencari apakah username sudah digunakan
-user *cariUser(string username, user *head_user) // fungsi yang mengambil dua paaramameter
+
+
+// Fungsi Untuk Registrasi(User)
+void tambahUser(user *&head_user, user *&tail_user)
 {
-  user *current = head_user;
-  while (current != nullptr) // loop while yang berjalan selama current tidak null
+  user *newuser = Newuser(head_user); // Memanggil fungsi Newuser untuk membuat user baru.
+  if (newuser)                        // Memeriksa apakah pointer newuser tidak nullptr. Jika nullptr, berarti pembuatan user baru tidak berhasil dan tidak perlu melanjutkan proses registrasi.
   {
-    if (current->username == username) // jika bernilai true maka fungsi berakhir sampai sini.
-    {                                  // artinya ada username yang sama maka loop tidak dilanjutkan
-      return current;
+    if (isempty(head_user, tail_user)) // Memeriksa apakah linked list user kosong.
+    {
+      head_user = newuser;
+      tail_user = newuser;
+      // Jika kosong (true), head_user dan tail_user diatur ke newuser, karena ini adalah user pertama dalam linked list.
     }
-    current = current->next; // dan jika bernilai false maka akan melanjutkan pencarian
+    else
+    { // Jika tidak kosong (false),
+      tail_user->next = newuser;
+      newuser->prev = tail_user;
+      tail_user = newuser;
+      // tail_user->next = newuser; newuser->prev = tail_user; tail_user = newuser;: Menambahkan newuser ke belakang linked list.
+      // Pointer next pada node sebelumnya (tail_user) diatur untuk menunjuk ke newuser, dan pointer prev pada newuser diatur untuk menunjuk ke tail_user. Kemudian, tail_user diupdate menjadi newuser.
+      cout << "Registrasi Berhasil" << endl;
+      cout << "Silahkan Login Untuk Memesan" << endl; // Setelah menambahkan user ke linked list, mencetak pesan registrasi berhasil dan mengundang pengguna untuk login.
+    }
   }
-  return nullptr; // Jika selesai melalui seluruh linked list dan tidak menemukan node dengan username yang sesuai,
-} // mengembalikan nullptr untuk menandakan bahwa pengguna tidak ditemukan.
+}
+
 
 // Fungsi untuk memeriksa apakah pengguna (user) valid (disini verif loginnya)
 user *isUserValid(user *head_user, string username, string password, string now)
